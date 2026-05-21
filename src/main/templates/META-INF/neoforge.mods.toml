@@ -5,6 +5,7 @@ license = "${mod_license}"
 modId = "tracks"
 version = "${mod_version}"
 displayName = "${mod_name}"
+logoFile = "icon.png"
 credits = "Uses Trackwork art assets as placeholders. Special Thanks to original Create:Tracks author."
 authors = "ChiyahaRe"
 description = '''Fork of Addon for Create: Simulated Offroad that adds adjustable suspension keys and Sable-powered track blocks. More Create: Trackwork like features added.'''
