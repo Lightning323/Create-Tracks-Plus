@@ -1,0 +1,48 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+[[mods]]
+modId = "tracks"
+version = "${mod_version}"
+displayName = "${mod_name}"
+credits = "Uses Trackwork art assets as placeholders. Special Thanks to original Create:Tracks author."
+authors = "ChiyahaRe"
+description = '''Fork of Addon for Create: Simulated Offroad that adds adjustable suspension keys and Sable-powered track blocks. More Create: Trackwork like features added.'''
+[[mixins]]
+config = "tracks.mixins.json"
+[[dependencies.tracks]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neo_version}"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.tracks]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.tracks]]
+modId = "create"
+type = "required"
+versionRange = "[6.0.9,)"
+ordering = "AFTER"
+side = "BOTH"
+[[dependencies.tracks]]
+modId = "sable"
+type = "required"
+versionRange = "[1.0.3,)"
+ordering = "AFTER"
+side = "BOTH"
+[[dependencies.tracks]]
+modId = "simulated"
+type = "required"
+versionRange = "[1.0.1,)"
+ordering = "AFTER"
+side = "BOTH"
+[[dependencies.tracks]]
+modId = "offroad"
+type = "required"
+versionRange = "[1.0.1,)"
+ordering = "AFTER"
+side = "BOTH"

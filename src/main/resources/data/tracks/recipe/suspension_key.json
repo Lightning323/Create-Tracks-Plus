@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "G": {
+      "item": "create:golden_sheet"
+    },
+    "P": {
+      "item": "create:precision_mechanism"
+    },
+    "S": {
+      "item": "simulated:spring"
+    }
+  },
+  "pattern": [
+    "GP ",
+    "GC ",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tracks:suspension_key"
+  }
+}

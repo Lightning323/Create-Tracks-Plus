@@ -1,0 +1,11 @@
+{
+  "priority": 2100,
+  "title": {
+    "text": { "translate": "tracks.simulated_section.tracks" },
+    "background": "#aa2f2d26",
+    "color": "#ffe8decf",
+    "secondary_color": "#ffc7b9a2"
+  },
+  "sprite": "tracks:tracks",
+  "only_animate_on_hover": true
+}

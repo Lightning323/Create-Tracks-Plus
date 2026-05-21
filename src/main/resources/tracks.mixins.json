@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.qwxon.tracks.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "WheelMountBlockMixin",
+    "WheelMountOffsetMixin"
+  ],
+  "client": [
+    "KineticBlockEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
