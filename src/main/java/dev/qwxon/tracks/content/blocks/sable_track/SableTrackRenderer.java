@@ -107,9 +107,9 @@ extends KineticBlockEntityRenderer<SableTrackBlockEntity> {
         if (role == SableTrackRole.DRIVE) {
             slopeDelta = be.getNeighborExtensionDelta(neighborDirection, partialTicks);
             if (frontEnd) {
-                slopeDelta = -slopeDelta + 0.5 + (neighborHeightOffset - heightOffset)*0.9;
+                slopeDelta = -slopeDelta + 0.5 - (neighborHeightOffset - heightOffset)*0.9;
             } else {
-                slopeDelta = slopeDelta  + (neighborHeightOffset - heightOffset)*0.75;
+                slopeDelta = slopeDelta  - (neighborHeightOffset - heightOffset)*0.75;
             }
         } else if (role == SableTrackRole.SUSPENSION) {
             Direction along = neighborDirection.getClockWise();
@@ -172,7 +172,7 @@ extends KineticBlockEntityRenderer<SableTrackBlockEntity> {
             SableTrackRenderer.renderBeltPartial(TracksPartialModels.TRACKWORK_WRAPPED_LINK, blockState, ms, buffer, partLight, longitudinalOffset + (double)tuning.wrapBelt.x, part.radius() + (double)tuning.wrapBelt.y - 0.8, lateralOffset + (double)(tuning.wrapBelt.z * endMirror), tuning.wrapBelt.slopeDegrees, part.visualScale(), tuning.wrapBelt, 1.0f, frontEnd, driveWrapScroll, beltSprite);
         }
         double topBeltYOffset = role == SableTrackRole.SUSPENSION ? -0.75 : -0.8;
-        double topBeltHeightOffset = TracksClient.holdingSuspensionKeyInPositionMode ? 0 : currentHeightOffset;
+        double topBeltHeightOffset = 0;
         SableTrackRenderer.renderBeltPartial(TracksPartialModels.TRACKWORK_TRACK_LINK, blockState, ms, buffer, partLight, longitudinalOffset + (double)tuning.topBelt.x, part.radius() + (double)tuning.topBelt.y + topBeltYOffset + topBeltHeightOffset, lateralOffset + (double)(tuning.topBelt.z * beltMirror), TrackRenderTuning.BASE_SLOPE_DEGREES + tuning.topBelt.slopeDegrees, part.visualScale(), tuning.topBelt, 1.0f, frontEnd, driveStraightScroll, beltSprite);
         double bottomBeltVisualY = verticalOffset + part.radius() + (double)tuning.bottomBelt.y + wheelVisualYOffset + 0.6 + currentHeightOffset;
         double bottomBeltVisualX = longitudinalOffset + (double)tuning.bottomBelt.x;
