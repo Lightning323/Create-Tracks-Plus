@@ -174,12 +174,12 @@ Clearable {
     private double angle;
     private double angularVelocity = 0.0;
     private double touchingFriction = 1.0;
-    private double springMultiplier = 1.0;
-    private double dampingMultiplier = 0.1;
+    private double springMultiplier = 0.5;
+    private double dampingMultiplier = 0.5;
     private double bumpClearanceMultiplier = 1.0;
     private double bumpForceMultiplier = 1.0;
-    private double maxImpulseMultiplier = 1.0;
-    private double driveMultiplier = 1.0;
+    private double maxImpulseMultiplier = 0.5;
+    private double driveMultiplier = 2.0;
     private double gripMultiplier = 1.0;
     private int lastPropagatedStrength = 16;
     private int protectedStrengthValue = 16;
@@ -245,7 +245,7 @@ Clearable {
             return;
         }
         double suspensionRestDistance = 0.65;
-        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc)pose, 1, 1.0);
+        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc)pose, part.contactSamples(), 0.35);
         double maxExtension = extensionToTerrain.maxExtension();
         double springHeightCompensation = 0.0;
         double springMaxExtension = maxExtension - 0.0;
@@ -373,28 +373,62 @@ Clearable {
         Direction minNormal = Direction.UP;
         SubLevel minHitSubLevel = null;
         BlockPos minInteractingBlock = null;
+
+        // 斜めレイキャストの角度（ラジアン）。前方/後方約45度
+        double angle = Math.toRadians(45);
+        double sin = Math.sin(angle);
+        double cos = Math.cos(angle);
+
         for (int i = -contactSamples; i <= contactSamples; ++i) {
-            double dist;
-            Vec3 localPosO = trackPosCenter.add(JOMLConversion.toMojang((Vector3dc)forwardD).scale((double)i * sampleSpacing));
-            Vec3 rayStart = localPosO.add(0.0, 1.25, 0.0);
-            ClipContext clipContext = new ClipContext(rayStart, localPosO.subtract(0.0, 5.0, 0.0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
-            ((ClipContextExtension)clipContext).sable$setIgnoredSubLevel(Sable.HELPER.getContaining((BlockEntity)this));
-            BlockHitResult clipResult = this.level.clip(clipContext);
-            if (clipResult.getType() == HitResult.Type.MISS) continue;
-            SubLevel hitSubLevel = Sable.HELPER.getContaining(this.level, (Position)clipResult.getLocation());
-            Vec3 localHitPos = pose.transformPositionInverse(hitSubLevel == null ? clipResult.getLocation() : hitSubLevel.logicalPose().transformPosition(clipResult.getLocation()));
-            if (hitSubLevel != null && localHitPos.y >= trackPosCenter.y - 1.0E-4 || localPosO.distanceTo(localHitPos) < 0.05 || (dist = Math.max(0.0, trackPosCenter.y - localHitPos.y)) <= 1.0E-5 && localHitPos.y <= trackPosCenter.y) continue;
-            Direction dir = clipResult.getDirection();
-            Vector3d hitNormal = new Vector3d((double)dir.getStepX(), (double)dir.getStepY(), (double)dir.getStepZ());
-            if (hitSubLevel != null) {
-                hitSubLevel.logicalPose().transformNormal(hitNormal);
+            Vec3 localPosO = trackPosCenter.add(JOMLConversion.toMojang(forwardD).scale((double) i * sampleSpacing));
+
+            // 垂直、前方斜め、後方斜めの3方向をチェック
+            for (int direction = -1; direction <= 1; direction++) {
+                Vec3 rayStart;
+                Vec3 rayEnd;
+
+                if (direction == 0) {
+                    rayStart = localPosO.add(0.0, 1.25, 0.0);
+                    rayEnd = localPosO.subtract(0.0, 5.0, 0.0);
+                } else {
+                    Vec3 horizontalOffset = JOMLConversion.toMojang(forwardD).scale(direction * 0.5);
+                    rayStart = localPosO.add(0.0, 0.5, 0.0);
+
+                    rayEnd = localPosO.add(horizontalOffset).subtract(0.0, 1.0, 0.0);
+                }
+
+                ClipContext clipContext = new ClipContext(rayStart, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
+                ((ClipContextExtension) clipContext).sable$setIgnoredSubLevel(Sable.HELPER.getContaining((BlockEntity) this));
+                BlockHitResult clipResult = this.level.clip(clipContext);
+
+                if (clipResult.getType() == HitResult.Type.MISS) continue;
+
+                SubLevel hitSubLevel = Sable.HELPER.getContaining(this.level, (Position) clipResult.getLocation());
+                Vec3 hitWorldPos = hitSubLevel == null ? clipResult.getLocation() : hitSubLevel.logicalPose().transformPosition(clipResult.getLocation());
+                Vec3 localHitPos = pose.transformPositionInverse(hitWorldPos);
+
+                double dist;
+                // 地形との距離を計算（現在のパーツ位置のY座標と衝突点のY座標の差）
+                if (hitSubLevel != null && localHitPos.y >= trackPosCenter.y - 1.0E-4 || localPosO.distanceTo(localHitPos) < 0.05 || (dist = Math.max(0.0, trackPosCenter.y - localHitPos.y)) <= 1.0E-5 && localHitPos.y <= trackPosCenter.y)
+                    continue;
+
+                Direction dir = clipResult.getDirection();
+                Vector3d hitNormal = new Vector3d((double) dir.getStepX(), (double) dir.getStepY(), (double) dir.getStepZ());
+                if (hitSubLevel != null) {
+                    hitSubLevel.logicalPose().transformNormal(hitNormal);
+                }
+                pose.transformNormalInverse(hitNormal);
+
+                // 上向きの面のみを接地対象とする
+                if (hitNormal.dot(0.0, 1.0, 0.0) < 0.5) continue;
+
+                if (dist < minExtension) {
+                    minExtension = dist;
+                    minNormal = clipResult.getDirection();
+                    minHitSubLevel = hitSubLevel;
+                    minInteractingBlock = clipResult.getBlockPos();
+                }
             }
-            pose.transformNormalInverse(hitNormal);
-            if (hitNormal.dot(0.0, 1.0, 0.0) < 0.5) continue;
-            minExtension = Math.min(minExtension, dist);
-            minNormal = clipResult.getDirection();
-            minHitSubLevel = hitSubLevel;
-            minInteractingBlock = clipResult.getBlockPos();
         }
         return new TerrainCastResult(minExtension, minNormal, minHitSubLevel, minInteractingBlock);
     }
@@ -753,7 +787,7 @@ Clearable {
         this.dampingMultiplier = 0.1;
         this.bumpClearanceMultiplier = 1.0;
         this.bumpForceMultiplier = 1.0;
-        this.maxImpulseMultiplier = 1.0;
+        this.maxImpulseMultiplier = 0.5;
         this.driveMultiplier = 1.0;
         this.gripMultiplier = 1.0;
         this.setChanged();
