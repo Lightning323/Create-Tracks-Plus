@@ -107,7 +107,7 @@ extends KineticBlockEntityRenderer<SableTrackBlockEntity> {
         if (role == SableTrackRole.DRIVE) {
             slopeDelta = be.getNeighborExtensionDelta(neighborDirection, partialTicks);
             if (frontEnd) {
-                slopeDelta = -slopeDelta + 0.5 - (neighborHeightOffset - heightOffset)*0.9;
+                slopeDelta = -slopeDelta + 0.45 - (neighborHeightOffset - heightOffset)*0.9;
             } else {
                 slopeDelta = slopeDelta  - (neighborHeightOffset - heightOffset)*0.75;
             }

@@ -22,7 +22,6 @@ import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
-import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.qwxon.tracks.Tracks;
 import dev.qwxon.tracks.content.blocks.sable_track.SableTrackBlock;
@@ -30,12 +29,11 @@ import dev.qwxon.tracks.content.blocks.sable_track.SableTrackRole;
 import dev.qwxon.tracks.content.items.TrackMountBlockItem;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
 public class TracksBlocks {
     private static final SimulatedRegistrate REGISTRATE = Tracks.getRegistrate();
+    @SuppressWarnings("removal")
     public static final BlockEntry<SableTrackBlock> TRACK_MOUNT = REGISTRATE.block("track_mount", properties -> new SableTrackBlock(properties, SableTrackRole.MOUNT))
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion().isRedstoneConductor((state, level, pos) -> false))
