@@ -134,7 +134,7 @@ implements WheelMountOffsetAccess {
     }
 
     @Override
-    public double tracks$adjustHeightOffset(int direction) {
+    public double tracks$adjustHeightOffset(int direction, boolean sideInteraction) {
         double previous = this.tracks$heightOffset;
         this.tracks$heightOffset = Mth.clamp((double)((double)Math.round((this.tracks$heightOffset + (double)direction * 0.125) / 0.125) * 0.125), (double)-0.75, (double)0.75);
         if (Math.abs(previous - this.tracks$heightOffset) > 1.0E-6) {

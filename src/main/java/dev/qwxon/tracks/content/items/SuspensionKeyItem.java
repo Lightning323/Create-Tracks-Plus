@@ -116,7 +116,7 @@ extends Item {
             Direction facing = (Direction)level.getBlockState(pos).getValue(WheelMountBlock.HORIZONTAL_FACING);
             if (clickedFace == facing) {
                 axisName = "height";
-                value = wheelMount.tracks$adjustHeightOffset(direction);
+                value = wheelMount.tracks$adjustHeightOffset(direction, false);
             } else if (clickedFace.getAxis() == Direction.Axis.Y) {
                 axisName = "forward/back";
                 value = wheelMount.tracks$adjustLongitudinalOffset(direction);
@@ -140,7 +140,7 @@ extends Item {
                 value = track.adjustLateralOffset(direction);
             } else {
                 axisName = "height";
-                value = track.adjustHeightOffset(direction);
+                value = track.adjustHeightOffset(direction, true);
             }
             this.positionFeedback(level, pos, player, axisName, value);
             return InteractionResult.sidedSuccess((boolean)level.isClientSide);
