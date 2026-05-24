@@ -750,7 +750,7 @@ Clearable {
         this.lastPropagatedStrength = 16;
         this.protectedStrengthValue = 16;
         this.springMultiplier = 1.0;
-        this.dampingMultiplier = 0.1;
+        this.dampingMultiplier = 1.0;
         this.bumpClearanceMultiplier = 1.0;
         this.bumpForceMultiplier = 1.0;
         this.maxImpulseMultiplier = 1.0;

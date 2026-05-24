@@ -213,7 +213,7 @@ extends Item {
     public static enum TuningMode {
         STRENGTH("strength", "item.tracks.suspension_key.mode.strength", false),
         SPRING("spring", "item.tracks.suspension_key.mode.spring", true),
-        DAMPING("damping", "item.tracks.suspension_key.mode.damping", false),
+        DAMPING("damping", "item.tracks.suspension_key.mode.damping", true),
         BUMP_CLEARANCE("bump_clearance", "item.tracks.suspension_key.mode.bump_clearance", false),
         BUMP_FORCE("bump_force", "item.tracks.suspension_key.mode.bump_force", false),
         MAX_IMPULSE("max_impulse", "item.tracks.suspension_key.mode.max_impulse", false),

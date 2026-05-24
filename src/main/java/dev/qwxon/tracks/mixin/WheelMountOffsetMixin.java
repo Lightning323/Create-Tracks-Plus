@@ -78,38 +78,33 @@ implements WheelMountOffsetAccess {
     @Shadow
     protected int clientSteeringSignalRight;
     @Unique
-    private double tracks$lateralOffset;
+    private double tracks$lateralOffset = 0.0;
     @Unique
-    private double tracks$lastLateralOffset;
+    private double tracks$lastLateralOffset = 0.0;
     @Unique
-    private double tracks$longitudinalOffset;
+    private double tracks$longitudinalOffset = 0.0;
     @Unique
-    private double tracks$lastLongitudinalOffset;
+    private double tracks$lastLongitudinalOffset = 0.0;
     @Unique
-    private double tracks$heightOffset;
+    private double tracks$heightOffset = 0.0;
     @Unique
-    private double tracks$lastHeightOffset;
+    private double tracks$lastHeightOffset = 0.0;
     @Unique
-    private double tracks$wheelSpringMultiplier;
+    private double tracks$wheelSpringMultiplier = 1.0;
     @Unique
-    private double tracks$wheelDriveMultiplier;
+    private double tracks$wheelDampingMultiplier = 1.0;
     @Unique
-    private double tracks$wheelGripMultiplier;
+    private double tracks$wheelDriveMultiplier = 1.0;
     @Unique
-    private boolean tracks$visualSuspensionHidden;
+    private double tracks$wheelGripMultiplier = 1.0;
+    @Unique
+    private boolean tracks$visualSuspensionHidden = false;
 
     @Shadow
     protected abstract double getLerpedYaw(double var1);
 
     public WheelMountOffsetMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        this.tracks$lastLateralOffset = this.tracks$lateralOffset = 0.0;
-        this.tracks$lastLongitudinalOffset = this.tracks$longitudinalOffset = 0.0;
-        this.tracks$lastHeightOffset = this.tracks$heightOffset = 0.0;
-        this.tracks$wheelSpringMultiplier = 1.0;
-        this.tracks$wheelDriveMultiplier = 1.0;
-        this.tracks$wheelGripMultiplier = 1.0;
-        this.tracks$visualSuspensionHidden = false;
     }
 
     @Override
@@ -161,6 +156,10 @@ implements WheelMountOffsetAccess {
                 this.tracks$wheelSpringMultiplier = next;
                 break;
             }
+            case "damping": {
+                this.tracks$wheelDampingMultiplier = next;
+                break;
+            }
             case "drive": {
                 this.tracks$wheelDriveMultiplier = next;
                 break;
@@ -184,6 +183,7 @@ implements WheelMountOffsetAccess {
     public double tracks$getTuning(String key) {
         return switch (key) {
             case "spring" -> this.tracks$wheelSpringMultiplier;
+            case "damping" -> this.tracks$wheelDampingMultiplier;
             case "drive" -> this.tracks$wheelDriveMultiplier;
             case "grip" -> this.tracks$wheelGripMultiplier;
             default -> 1.0;
@@ -193,6 +193,7 @@ implements WheelMountOffsetAccess {
     @Override
     public void tracks$resetTuning() {
         this.tracks$wheelSpringMultiplier = 1.0;
+        this.tracks$wheelDampingMultiplier = 1.0;
         this.tracks$wheelDriveMultiplier = 1.0;
         this.tracks$wheelGripMultiplier = 1.0;
         this.setChanged();
@@ -258,6 +259,7 @@ implements WheelMountOffsetAccess {
         tag.putDouble("TracksLongitudinalOffset", this.tracks$longitudinalOffset);
         tag.putDouble("TracksHeightOffset", this.tracks$heightOffset);
         tag.putDouble("TracksWheelSpringMultiplier", this.tracks$wheelSpringMultiplier);
+        tag.putDouble("TracksWheelDampingMultiplier", this.tracks$wheelDampingMultiplier);
         tag.putDouble("TracksWheelDriveMultiplier", this.tracks$wheelDriveMultiplier);
         tag.putDouble("TracksWheelGripMultiplier", this.tracks$wheelGripMultiplier);
         tag.putBoolean("TracksVisualSuspensionHidden", this.tracks$visualSuspensionHidden);
@@ -276,6 +278,9 @@ implements WheelMountOffsetAccess {
         }
         if (tag.contains("TracksWheelSpringMultiplier")) {
             this.tracks$wheelSpringMultiplier = tag.getDouble("TracksWheelSpringMultiplier");
+        }
+        if (tag.contains("TracksWheelDampingMultiplier")) {
+            this.tracks$wheelDampingMultiplier = tag.getDouble("TracksWheelDampingMultiplier");
         }
         if (tag.contains("TracksWheelDriveMultiplier")) {
             this.tracks$wheelDriveMultiplier = tag.getDouble("TracksWheelDriveMultiplier");
@@ -296,6 +301,11 @@ implements WheelMountOffsetAccess {
     @ModifyConstant(method={"sable$physicsTick"}, constant={@Constant(doubleValue=40.0)})
     private double tracks$tuneWheelSpring(double original) {
         return original * this.tracks$wheelSpringMultiplier;
+    }
+
+    @ModifyConstant(method={"sable$physicsTick"}, constant={@Constant(doubleValue=10.0)})
+    private double tracks$tuneWheelDamping(double original) {
+        return original * this.tracks$wheelDampingMultiplier;
     }
 
     @ModifyConstant(method={"sable$physicsTick"}, constant={@Constant(doubleValue=1.75)})
