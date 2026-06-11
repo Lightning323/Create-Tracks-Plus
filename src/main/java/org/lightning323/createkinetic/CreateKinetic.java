@@ -65,7 +65,7 @@ public class CreateKinetic {
         modBus.addListener(CreateKinetic::registerPayloads);
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
         CreateKinetic.init();
-        CreateKinetic.getRegistrate().registerEventListeners(modBus);
+        getRegistrate().registerEventListeners(modBus);
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {

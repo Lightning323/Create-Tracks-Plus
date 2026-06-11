@@ -32,22 +32,28 @@ import org.lightning323.createkinetic.registry.TracksPartialModels;
 import org.lightning323.createkinetic.registry.TracksSpriteShifts;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
 
-@Mod(value=CreateKinetic.MOD_ID, dist={Dist.CLIENT})
+@Mod(value = CreateKinetic.MOD_ID, dist = {Dist.CLIENT})
 public class TracksClient {
-    private static final KeyMapping OPEN_TUNING = new KeyMapping("key."+CreateKinetic.MOD_ID+".open_tuning", InputConstants.Type.KEYSYM, 74, "key.categories."+CreateKinetic.MOD_ID);
+    private static final KeyMapping OPEN_TUNING = new KeyMapping("key." + CreateKinetic.MOD_ID + ".open_tuning", InputConstants.Type.KEYSYM, 74, "key.categories." + CreateKinetic.MOD_ID);
 
-    public TracksClient(IEventBus modBus) {
+    public static boolean holdingSuspensionKey = false;
+    public static boolean holdingSuspensionKeyInPositionMode = false;
+    public static boolean holdingSuspensionKeyInAllPositionMode = false;
+    public static boolean holdingSuspensionKeyInResetMode = false;
+
+    public static void init(IEventBus modBus) {
         modBus.addListener(TracksClient::clientSetup);
         modBus.addListener(TracksClient::registerKeys);
         NeoForge.EVENT_BUS.addListener(EventPriority.NORMAL, TracksClient::clientTick);
-        TracksClient.init();
+        TracksPartialModels.init();
+        TracksSpriteShifts.init();
     }
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            TrackRenderTuning.load(Minecraft.getInstance().gameDirectory.toPath().resolve("config/"+CreateKinetic.MOD_ID+"-render-tuning.txt"));
-            BlockEntityRenderers.register((BlockEntityType)((BlockEntityType) OffroadBlockEntityTypes.WHEEL_MOUNT.get()), AdjustableWheelMountRenderer::new);
-            BlockEntityRenderers.register((BlockEntityType)((BlockEntityType) TracksBlockEntityTypes.SABLE_TRACK.get()), SableTrackRenderer::new);
+            TrackRenderTuning.load(Minecraft.getInstance().gameDirectory.toPath().resolve("config/" + CreateKinetic.MOD_ID + "-render-tuning.txt"));
+            BlockEntityRenderers.register((BlockEntityType) ((BlockEntityType) OffroadBlockEntityTypes.WHEEL_MOUNT.get()), AdjustableWheelMountRenderer::new);
+            BlockEntityRenderers.register((BlockEntityType) ((BlockEntityType) TracksBlockEntityTypes.SABLE_TRACK.get()), SableTrackRenderer::new);
         });
     }
 
@@ -71,23 +77,13 @@ public class TracksClient {
         }
         while (OPEN_TUNING.consumeClick()) {
             if (minecraft.player == null) continue;
-            PacketDistributor.sendToServer((CustomPacketPayload)new RequestOpenTuningPayload(), (CustomPacketPayload[])new CustomPacketPayload[0]);
+            PacketDistributor.sendToServer((CustomPacketPayload) new RequestOpenTuningPayload(), (CustomPacketPayload[]) new CustomPacketPayload[0]);
         }
     }
 
     public static void openTuningScreen() {
-        Minecraft.getInstance().setScreen((Screen)new TrackTuningScreen());
+        Minecraft.getInstance().setScreen((Screen) new TrackTuningScreen());
     }
 
-
-    public static boolean holdingSuspensionKey = false;
-    public static boolean holdingSuspensionKeyInPositionMode = false;
-    public static boolean holdingSuspensionKeyInAllPositionMode = false;
-    public static boolean holdingSuspensionKeyInResetMode = false;
-
-    public static void init() {
-        TracksPartialModels.init();
-        TracksSpriteShifts.init();
-    }
 }
 
