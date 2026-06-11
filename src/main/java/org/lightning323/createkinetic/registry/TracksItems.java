@@ -9,19 +9,19 @@
  *  dev.simulated_team.simulated.registrate.simulated_tab.CreativeTabItemTransforms$VisibilityType
  *  net.minecraft.world.item.Item
  */
-package org.lightning323.createkinetic.index;
+package org.lightning323.createkinetic.registry;
 
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import org.lightning323.createkinetic.Tracks;
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import dev.simulated_team.simulated.registrate.simulated_tab.CreativeTabItemTransforms;
 import net.minecraft.world.item.Item;
 
 public class TracksItems {
-    private static final SimulatedRegistrate REGISTRATE = Tracks.getRegistrate();
+    private static final SimulatedRegistrate REGISTRATE = CreateKinetic.getRegistrate();
     public static final ItemEntry<Item> SMALL_SUSPENSION_TRACK = REGISTRATE.item("small_suspension_track", Item::new).register();
     public static final ItemEntry<Item> SUSPENSION_TRACK = ((ItemBuilder)REGISTRATE.item("suspension_track", Item::new).transform((NonNullFunction)CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
     public static final ItemEntry<Item> LARGE_SUSPENSION_TRACK = ((ItemBuilder)REGISTRATE.item("large_suspension_track", Item::new).transform((NonNullFunction)CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();

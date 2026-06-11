@@ -28,6 +28,7 @@
  */
 package org.lightning323.createkinetic.content.items;
 
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlockEntity;
 import org.lightning323.createkinetic.mixin_interface.WheelMountOffsetAccess;
@@ -68,7 +69,7 @@ extends Item {
         TuningMode mode = SuspensionKeyItem.cycleMode(stack, player.isShiftKeyDown() ? -1 : 1);
         if (!level.isClientSide) {
             level.playSound(null, player.blockPosition(), CRAFTER_CLICK, SoundSource.PLAYERS, 0.45f, 1.0f);
-            player.displayClientMessage((Component)Component.translatable((String)"item.tracks.suspension_key.mode", (Object[])new Object[]{mode.title()}).withStyle(ChatFormatting.GOLD), true);
+            player.displayClientMessage((Component)Component.translatable((String)"item."+CreateKinetic.MOD_ID+".suspension_key.mode", (Object[])new Object[]{mode.title()}).withStyle(ChatFormatting.GOLD), true);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
@@ -94,7 +95,7 @@ extends Item {
                     return InteractionResult.sidedSuccess((boolean)level.isClientSide);
                 }
                 if (!level.isClientSide) {
-                    double value = wheelMount.tracks$adjustTuning(mode.key, direction);
+                    double value = wheelMount.kinetic$adjustTuning(mode.key, direction);
                     this.feedback(level, pos, player, mode, value, true);
                 }
                 return InteractionResult.sidedSuccess((boolean)level.isClientSide);
@@ -116,13 +117,13 @@ extends Item {
             Direction facing = (Direction)level.getBlockState(pos).getValue(WheelMountBlock.HORIZONTAL_FACING);
             if (clickedFace == facing) {
                 axisName = "height";
-                value = wheelMount.tracks$adjustHeightOffset(direction, false);
+                value = wheelMount.kinetic$adjustHeightOffset(direction, false);
             } else if (clickedFace.getAxis() == Direction.Axis.Y) {
                 axisName = "forward/back";
-                value = wheelMount.tracks$adjustLongitudinalOffset(direction);
+                value = wheelMount.kinetic$adjustLongitudinalOffset(direction);
             } else {
                 axisName = "left/right";
-                value = wheelMount.tracks$adjustLateralOffset(direction);
+                value = wheelMount.kinetic$adjustLateralOffset(direction);
             }
             this.positionFeedback(level, pos, player, axisName, value);
             return InteractionResult.sidedSuccess((boolean)level.isClientSide);
@@ -156,7 +157,7 @@ extends Item {
         if (blockEntity instanceof WheelMountOffsetAccess) {
             WheelMountOffsetAccess wheelMount = (WheelMountOffsetAccess)blockEntity;
             if (!level.isClientSide) {
-                wheelMount.tracks$resetTuning();
+                wheelMount.kinetic$resetTuning();
                 this.feedback(level, pos, player, TuningMode.RESET, 0.0, true);
             }
             return InteractionResult.sidedSuccess((boolean)level.isClientSide);
@@ -179,7 +180,7 @@ extends Item {
         level.playSound(null, pos, CRAFTER_CLICK, SoundSource.BLOCKS, 0.45f, 0.9f + level.random.nextFloat() * 0.2f);
         if (player != null) {
             String formattedValue = mode == TuningMode.RESET ? "-" : String.format(Locale.ROOT, mode == TuningMode.STRENGTH ? "%.0f" : "%.2fx", value);
-            MutableComponent message = applied ? Component.translatable((String)"item.tracks.suspension_key.tuned", (Object[])new Object[]{mode.title(), formattedValue}) : Component.translatable((String)"item.tracks.suspension_key.unsupported", (Object[])new Object[]{mode.title()});
+            MutableComponent message = applied ? Component.translatable((String)"item."+ CreateKinetic.MOD_ID+".suspension_key.tuned", (Object[])new Object[]{mode.title(), formattedValue}) : Component.translatable((String)"item."+CreateKinetic.MOD_ID+".suspension_key.unsupported", (Object[])new Object[]{mode.title()});
             player.displayClientMessage((Component)message.copy().withStyle(ChatFormatting.GRAY), true);
         }
     }
@@ -211,17 +212,17 @@ extends Item {
     }
 
     public static enum TuningMode {
-        STRENGTH("strength", "item.tracks.suspension_key.mode.strength", false),
-        SPRING("spring", "item.tracks.suspension_key.mode.spring", true),
-        DAMPING("damping", "item.tracks.suspension_key.mode.damping", true),
-        BUMP_CLEARANCE("bump_clearance", "item.tracks.suspension_key.mode.bump_clearance", false),
-        BUMP_FORCE("bump_force", "item.tracks.suspension_key.mode.bump_force", false),
-        MAX_IMPULSE("max_impulse", "item.tracks.suspension_key.mode.max_impulse", false),
-        DRIVE("drive", "item.tracks.suspension_key.mode.drive", true),
-        GRIP("grip", "item.tracks.suspension_key.mode.grip", true),
-        RESET("reset", "item.tracks.suspension_key.mode.reset", true),
-        POSITION("position", "item.tracks.suspension_key.mode.position", true),
-        ALL_POSITION("all_position", "item.tracks.suspension_key.mode.all_position", true);
+        STRENGTH("strength", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.strength", false),
+        SPRING("spring", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.spring", true),
+        DAMPING("damping", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.damping", true),
+        BUMP_CLEARANCE("bump_clearance", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.bump_clearance", false),
+        BUMP_FORCE("bump_force", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.bump_force", false),
+        MAX_IMPULSE("max_impulse", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.max_impulse", false),
+        DRIVE("drive", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.drive", true),
+        GRIP("grip", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.grip", true),
+        RESET("reset", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.reset", true),
+        POSITION("position", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.position", true),
+        ALL_POSITION("all_position", "item."+CreateKinetic.MOD_ID+".suspension_key.mode.all_position", true);
 
         public final String key;
         private final String translationKey;

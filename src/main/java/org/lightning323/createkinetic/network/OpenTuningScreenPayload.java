@@ -9,14 +9,14 @@
  */
 package org.lightning323.createkinetic.network;
 
-import org.lightning323.createkinetic.Tracks;
+import org.lightning323.createkinetic.CreateKinetic;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record OpenTuningScreenPayload() implements CustomPacketPayload
 {
-    public static final Type<OpenTuningScreenPayload> TYPE = new Type(Tracks.path("open_tuning_screen"));
+    public static final Type<OpenTuningScreenPayload> TYPE = new Type(CreateKinetic.path("open_tuning_screen"));
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenTuningScreenPayload> STREAM_CODEC = StreamCodec.unit(new OpenTuningScreenPayload());
 
     public Type<? extends CustomPacketPayload> type() {

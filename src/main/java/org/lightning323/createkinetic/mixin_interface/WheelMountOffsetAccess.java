@@ -4,32 +4,34 @@
 package org.lightning323.createkinetic.mixin_interface;
 
 public interface WheelMountOffsetAccess {
-    public double tracks$adjustLateralOffset(int var1);
 
-    public double tracks$adjustLongitudinalOffset(int var1);
 
-    public double tracks$adjustHeightOffset(int var1, boolean sideInteraction);
+    public double kinetic$adjustLateralOffset(int var1);
 
-    public double tracks$adjustTuning(String var1, int var2);
+    public double kinetic$adjustLongitudinalOffset(int var1);
 
-    public void tracks$resetTuning();
+    public double kinetic$adjustHeightOffset(int var1, boolean sideInteraction);
 
-    public double tracks$getTuning(String var1);
+    public double kinetic$adjustTuning(String var1, int var2);
 
-    public double tracks$getLerpedLateralOffset(float var1);
+    public void kinetic$resetTuning();
 
-    public double tracks$getLerpedLongitudinalOffset(float var1);
+    public double kinetic$getTuning(String var1);
 
-    public double tracks$getLerpedHeightOffset(float var1);
+    public double kinetic$getLerpedLateralOffset(float var1);
 
-    public double tracks$getLerpedYaw(float var1);
+    public double kinetic$getLerpedLongitudinalOffset(float var1);
 
-    public boolean tracks$isVisualSuspensionHidden();
+    public double kinetic$getLerpedHeightOffset(float var1);
 
-    public void tracks$toggleVisualSuspensionHidden();
+    public double kinetic$getLerpedYaw(float var1);
 
-    public int tracks$getClientSteeringSignalLeft();
+    public boolean kinetic$isVisualSuspensionHidden();
 
-    public int tracks$getClientSteeringSignalRight();
+    public void kinetic$toggleVisualSuspensionHidden();
+
+    public int kinetic$getClientSteeringSignalLeft();
+
+    public int kinetic$getClientSteeringSignalRight();
 }
 

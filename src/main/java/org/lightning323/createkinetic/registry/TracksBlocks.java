@@ -15,7 +15,7 @@
  *  net.minecraft.world.level.block.state.BlockBehaviour$Properties
  *  net.minecraft.world.level.material.MapColor
  */
-package org.lightning323.createkinetic.index;
+package org.lightning323.createkinetic.registry;
 
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.BlockStateGen;
@@ -23,7 +23,7 @@ import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import org.lightning323.createkinetic.Tracks;
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRole;
 import org.lightning323.createkinetic.content.items.TrackMountBlockItem;
@@ -32,7 +32,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.material.MapColor;
 
 public class TracksBlocks {
-    private static final SimulatedRegistrate REGISTRATE = Tracks.getRegistrate();
+    private static final SimulatedRegistrate REGISTRATE = CreateKinetic.getRegistrate();
     @SuppressWarnings("removal")
     public static final BlockEntry<SableTrackBlock> TRACK_MOUNT = REGISTRATE.block("track_mount", properties -> new SableTrackBlock(properties, SableTrackRole.MOUNT))
             .initialProperties(SharedProperties::stone)

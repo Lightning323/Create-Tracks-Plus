@@ -1,20 +1,22 @@
 /*
  * Decompiled with CFR 0.152.
- * 
+ *
  * Could not load the following classes:
  *  net.createmod.catnip.render.SpriteShiftEntry
  *  net.createmod.catnip.render.SpriteShifter
  *  net.minecraft.resources.ResourceLocation
  *  net.minecraft.world.item.DyeColor
  */
-package org.lightning323.createkinetic.index;
+package org.lightning323.createkinetic.registry;
 
 import java.util.EnumMap;
 import java.util.Map;
+
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SpriteShifter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import org.lightning323.createkinetic.CreateKinetic;
 
 public class TracksSpriteShifts {
     public static final SpriteShiftEntry BELT = TracksSpriteShifts.get("block/belt", "block/belt_scroll");
@@ -25,7 +27,7 @@ public class TracksSpriteShifts {
     }
 
     private static SpriteShiftEntry get(String originalLocation, String targetLocation) {
-        return SpriteShifter.get((ResourceLocation)ResourceLocation.tryBuild((String)"tracks", (String)originalLocation), (ResourceLocation)ResourceLocation.tryBuild((String)"tracks", (String)targetLocation));
+        return SpriteShifter.get((ResourceLocation) ResourceLocation.tryBuild((String) CreateKinetic.MOD_ID, (String) originalLocation), (ResourceLocation) ResourceLocation.tryBuild((String) CreateKinetic.MOD_ID, (String) targetLocation));
     }
 
     private static String textureName(DyeColor color) {

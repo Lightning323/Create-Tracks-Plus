@@ -87,7 +87,7 @@ extends KineticBlockEntityRenderer<WheelMountBlockEntity> {
         Direction direction = ((Direction)be.getBlockState().getValue((Property)BlockStateProperties.HORIZONTAL_FACING)).getOpposite();
         BlockState blockState = be.getBlockState();
         WheelMountOffsetAccess offsetAccess = (WheelMountOffsetAccess)be;
-        boolean hideSuspension = offsetAccess.tracks$isVisualSuspensionHidden();
+        boolean hideSuspension = offsetAccess.kinetic$isVisualSuspensionHidden();
         SuperByteBuffer diodeLeft = CachedBuffers.partial((PartialModel)OffroadPartialModels.DIODE_LEFT, (BlockState)blockState);
         SuperByteBuffer diodeRight = CachedBuffers.partial((PartialModel)OffroadPartialModels.DIODE_RIGHT, (BlockState)blockState);
         SuperByteBuffer teleOuter = CachedBuffers.partial((PartialModel)OffroadPartialModels.TELE_OUTER, (BlockState)blockState);
@@ -100,9 +100,9 @@ extends KineticBlockEntityRenderer<WheelMountBlockEntity> {
         double springWheelPivotOffsetHor = 0.75;
         double springWheelPivotOffsetVer = -0.125;
         double horizontalWheelPosition = 1.375;
-        double verticalWheelPosition = -be.getLerpedExtension(partialTicks) + offsetAccess.tracks$getLerpedHeightOffset(partialTicks);
-        double lateralWheelPosition = offsetAccess.tracks$getLerpedLateralOffset(partialTicks);
-        double longitudinalWheelPosition = offsetAccess.tracks$getLerpedLongitudinalOffset(partialTicks);
+        double verticalWheelPosition = -be.getLerpedExtension(partialTicks) + offsetAccess.kinetic$getLerpedHeightOffset(partialTicks);
+        double lateralWheelPosition = offsetAccess.kinetic$getLerpedLateralOffset(partialTicks);
+        double longitudinalWheelPosition = offsetAccess.kinetic$getLerpedLongitudinalOffset(partialTicks);
         double teleMountHor = 0.0;
         double teleMountVer = -0.375;
         double springMountHor = 0.4375;
@@ -128,7 +128,7 @@ extends KineticBlockEntityRenderer<WheelMountBlockEntity> {
         ms.pushPose();
         ms.translate(lateralWheelPosition, verticalWheelPosition, longitudinalWheelPosition + 1.625 - 1.375);
         ms.translate(0.5, 0.5, 0.5);
-        ms.rotateAround(Axis.YP.rotation((float)offsetAccess.tracks$getLerpedYaw(partialTicks)), 0.0f, 0.0f, -1.0f);
+        ms.rotateAround(Axis.YP.rotation((float)offsetAccess.kinetic$getLerpedYaw(partialTicks)), 0.0f, 0.0f, -1.0f);
         ms.translate(-0.5, -0.5, -0.5);
         if (!hideSuspension) {
             teleMount.light(light).renderInto(ms, vb);
@@ -168,8 +168,8 @@ extends KineticBlockEntityRenderer<WheelMountBlockEntity> {
             ((SuperByteBuffer)springBottom.light(light).translate(0.0, -((double)springSpan + -0.875), 0.0)).renderInto(ms, vb);
             ms.popPose();
         }
-        diodeLeft.light(light).color(SimColors.redstone((float)((float)offsetAccess.tracks$getClientSteeringSignalLeft() / 15.0f))).renderInto(ms, vb);
-        diodeRight.light(light).color(SimColors.redstone((float)((float)offsetAccess.tracks$getClientSteeringSignalRight() / 15.0f))).renderInto(ms, vb);
+        diodeLeft.light(light).color(SimColors.redstone((float)((float)offsetAccess.kinetic$getClientSteeringSignalLeft() / 15.0f))).renderInto(ms, vb);
+        diodeRight.light(light).color(SimColors.redstone((float)((float)offsetAccess.kinetic$getClientSteeringSignalRight() / 15.0f))).renderInto(ms, vb);
         ms.popPose();
     }
 

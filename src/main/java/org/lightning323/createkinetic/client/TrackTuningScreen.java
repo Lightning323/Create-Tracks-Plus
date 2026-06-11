@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.lightning323.createkinetic.CreateKinetic;
 
 public class TrackTuningScreen
 extends Screen {
@@ -57,7 +58,7 @@ extends Screen {
         this.addRenderableWidget(Button.builder(Component.literal("Copy + save tuning"), button -> {
             String dump = TrackRenderTuning.dump();
             Minecraft.getInstance().keyboardHandler.setClipboard(dump);
-            TrackRenderTuning.save(Minecraft.getInstance().gameDirectory.toPath().resolve("config/tracks-render-tuning.txt"));
+            TrackRenderTuning.save(Minecraft.getInstance().gameDirectory.toPath().resolve("config/"+ CreateKinetic.MOD_ID+"-render-tuning.txt"));
             if (Minecraft.getInstance().player != null) {
                 Minecraft.getInstance().player.displayClientMessage(Component.literal("Tracks tuning copied to clipboard and saved."), false);
             }
@@ -93,7 +94,7 @@ extends Screen {
         } else {
             this.element().add(this.axisIndex, amount);
         }
-        TrackRenderTuning.save(Minecraft.getInstance().gameDirectory.toPath().resolve("config/tracks-render-tuning.txt"));
+        TrackRenderTuning.save(Minecraft.getInstance().gameDirectory.toPath().resolve("config/"+CreateKinetic.MOD_ID+"-render-tuning.txt"));
         this.rebuild();
     }
 

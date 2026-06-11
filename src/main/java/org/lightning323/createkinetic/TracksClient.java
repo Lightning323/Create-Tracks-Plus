@@ -26,15 +26,15 @@ import org.lightning323.createkinetic.client.TrackTuningScreen;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRenderer;
 import org.lightning323.createkinetic.content.blocks.wheel_mount.AdjustableWheelMountRenderer;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
-import org.lightning323.createkinetic.index.TracksBlockEntityTypes;
-import org.lightning323.createkinetic.index.TracksItems;
-import org.lightning323.createkinetic.index.TracksPartialModels;
-import org.lightning323.createkinetic.index.TracksSpriteShifts;
+import org.lightning323.createkinetic.registry.TracksBlockEntityTypes;
+import org.lightning323.createkinetic.registry.TracksItems;
+import org.lightning323.createkinetic.registry.TracksPartialModels;
+import org.lightning323.createkinetic.registry.TracksSpriteShifts;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
 
-@Mod(value="tracks", dist={Dist.CLIENT})
+@Mod(value=CreateKinetic.MOD_ID, dist={Dist.CLIENT})
 public class TracksClient {
-    private static final KeyMapping OPEN_TUNING = new KeyMapping("key.tracks.open_tuning", InputConstants.Type.KEYSYM, 74, "key.categories.tracks");
+    private static final KeyMapping OPEN_TUNING = new KeyMapping("key."+CreateKinetic.MOD_ID+".open_tuning", InputConstants.Type.KEYSYM, 74, "key.categories."+CreateKinetic.MOD_ID);
 
     public TracksClient(IEventBus modBus) {
         modBus.addListener(TracksClient::clientSetup);
@@ -45,7 +45,7 @@ public class TracksClient {
 
     private static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            TrackRenderTuning.load(Minecraft.getInstance().gameDirectory.toPath().resolve("config/tracks-render-tuning.txt"));
+            TrackRenderTuning.load(Minecraft.getInstance().gameDirectory.toPath().resolve("config/"+CreateKinetic.MOD_ID+"-render-tuning.txt"));
             BlockEntityRenderers.register((BlockEntityType)((BlockEntityType) OffroadBlockEntityTypes.WHEEL_MOUNT.get()), AdjustableWheelMountRenderer::new);
             BlockEntityRenderers.register((BlockEntityType)((BlockEntityType) TracksBlockEntityTypes.SABLE_TRACK.get()), SableTrackRenderer::new);
         });

@@ -46,27 +46,30 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.lightning323.createkinetic.config.TracksServerConfig;
 import org.lightning323.createkinetic.events.TracksCommonEvents;
-import org.lightning323.createkinetic.index.TracksBlockEntityTypes;
-import org.lightning323.createkinetic.index.TracksBlocks;
-import org.lightning323.createkinetic.index.TracksItems;
+import org.lightning323.createkinetic.registry.TracksBlockEntityTypes;
+import org.lightning323.createkinetic.registry.TracksBlocks;
+import org.lightning323.createkinetic.registry.TracksItems;
 import org.lightning323.createkinetic.network.OpenTuningScreenPayload;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
 
-@Mod(value="tracks")
-public class Tracks {
-    public static final String MOD_ID = "tracks";
-    private static final NonNullSupplier<SimulatedRegistrate> REGISTRATE = NonNullSupplier.lazy(() -> (SimulatedRegistrate)new SimulatedRegistrate(Tracks.path(MOD_ID), MOD_ID).defaultCreativeTab((ResourceKey)null));
+import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 
-    public Tracks(IEventBus modBus, ModContainer modContainer) {
-        modBus.addListener(Tracks::registerPayloads);
+@Mod(value=MOD_ID)
+public class CreateKinetic {
+    public static final String MOD_ID = "tracks";
+    public static final String trackHiddenTag = "tracks_hidden";
+    private static final NonNullSupplier<SimulatedRegistrate> REGISTRATE = NonNullSupplier.lazy(() -> (SimulatedRegistrate)new SimulatedRegistrate(CreateKinetic.path(MOD_ID), MOD_ID).defaultCreativeTab((ResourceKey)null));
+
+    public CreateKinetic(IEventBus modBus, ModContainer modContainer) {
+        modBus.addListener(CreateKinetic::registerPayloads);
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
-        Tracks.init();
-        Tracks.getRegistrate().registerEventListeners(modBus);
+        CreateKinetic.init();
+        CreateKinetic.getRegistrate().registerEventListeners(modBus);
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("tracks").versioned("1.0.0");
+        PayloadRegistrar registrar = event.registrar(MOD_ID).versioned("1.0.0");
         registrar.playToServer(RequestOpenTuningPayload.TYPE, RequestOpenTuningPayload.STREAM_CODEC, RequestOpenTuningPayload::handle);
         registrar.playToServer(SelectTrackTuningModePayload.TYPE, SelectTrackTuningModePayload.STREAM_CODEC, SelectTrackTuningModePayload::handle);
         registrar.playToClient(OpenTuningScreenPayload.TYPE, OpenTuningScreenPayload.STREAM_CODEC, (payload, context) -> context.enqueueWork(() -> {
@@ -77,7 +80,7 @@ public class Tracks {
     }
 
     public static void init() {
-        Tracks.setTooltips();
+        CreateKinetic.setTooltips();
         TracksBlocks.init();
         TracksBlockEntityTypes.init();
         TracksItems.init();
@@ -85,7 +88,7 @@ public class Tracks {
     }
 
     private static void setTooltips() {
-        Tracks.getRegistrate().setTooltipModifierFactory(item -> {
+        CreateKinetic.getRegistrate().setTooltipModifierFactory(item -> {
             Rarity rarity = item.getDefaultInstance().getRarity();
             FontHelper.Palette color = FontHelper.Palette.STANDARD_CREATE;
             if (rarity == Rarity.EPIC) {

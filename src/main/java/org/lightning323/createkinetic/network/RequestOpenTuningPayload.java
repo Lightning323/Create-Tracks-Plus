@@ -13,7 +13,7 @@
  */
 package org.lightning323.createkinetic.network;
 
-import org.lightning323.createkinetic.Tracks;
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.config.TracksServerConfig;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -25,7 +25,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RequestOpenTuningPayload() implements CustomPacketPayload
 {
-    public static final Type<RequestOpenTuningPayload> TYPE = new Type(Tracks.path("request_open_tuning"));
+    public static final Type<RequestOpenTuningPayload> TYPE = new Type(CreateKinetic.path("request_open_tuning"));
     public static final StreamCodec<RegistryFriendlyByteBuf, RequestOpenTuningPayload> STREAM_CODEC = StreamCodec.unit(new RequestOpenTuningPayload());
 
     public static void handle(RequestOpenTuningPayload payload, IPayloadContext context) {

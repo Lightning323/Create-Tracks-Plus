@@ -6,7 +6,7 @@
  */
 package org.lightning323.createkinetic.content.blocks.sable_track;
 
-import org.lightning323.createkinetic.index.TracksItems;
+import org.lightning323.createkinetic.registry.TracksItems;
 import net.minecraft.world.item.ItemStack;
 
 public enum SableTrackPart {

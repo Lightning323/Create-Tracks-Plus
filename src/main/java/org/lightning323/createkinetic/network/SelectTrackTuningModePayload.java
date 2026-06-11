@@ -12,7 +12,7 @@
  */
 package org.lightning323.createkinetic.network;
 
-import org.lightning323.createkinetic.Tracks;
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -23,7 +23,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SelectTrackTuningModePayload(BlockPos pos, String key) implements CustomPacketPayload
 {
-    public static final Type<SelectTrackTuningModePayload> TYPE = new Type(Tracks.path("select_track_tuning_mode"));
+    public static final Type<SelectTrackTuningModePayload> TYPE = new Type(CreateKinetic.path("select_track_tuning_mode"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SelectTrackTuningModePayload> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, SelectTrackTuningModePayload>(){
 
         public SelectTrackTuningModePayload decode(RegistryFriendlyByteBuf buffer) {

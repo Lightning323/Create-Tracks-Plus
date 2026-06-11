@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0.152.
- * 
+ *
  * Could not load the following classes:
  *  com.google.common.collect.ImmutableList
  *  com.mojang.blaze3d.vertex.PoseStack
@@ -80,9 +80,10 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatt
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.TracksClient;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
-import org.lightning323.createkinetic.index.TracksItems;
+import org.lightning323.createkinetic.registry.TracksItems;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.block.BlockEntitySubLevelActor;
@@ -98,8 +99,10 @@ import dev.ryanhcode.sable.physics.config.block_properties.PhysicsBlockPropertyH
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 import java.util.Collection;
 import java.util.List;
+
 import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
@@ -136,10 +139,10 @@ import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
 public class SableTrackBlockEntity
-extends KineticBlockEntity
-implements BlockEntitySubLevelActor,
-Clearable {
-    private static final MutableComponent SCROLL_OPTION_TITLE = Component.translatable((String)"tracks.scroll_option.track_suspension_strength");
+        extends KineticBlockEntity
+        implements BlockEntitySubLevelActor,
+        Clearable {
+    private static final MutableComponent SCROLL_OPTION_TITLE = Component.translatable((String) CreateKinetic.MOD_ID + ".scroll_option.track_suspension_strength");
     private static final double MAX_LATERAL_OFFSET = 1.0;
     private static final double LATERAL_OFFSET_STEP = 0.125;
     private static final double MAX_LONGITUDINAL_OFFSET = 1.0;
@@ -204,8 +207,8 @@ Clearable {
     }
 
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        this.strength = new TrackStrengthValueBehaviour((Component)SCROLL_OPTION_TITLE, this, new TrackStrengthValueBox());
-        behaviours.add((BlockEntityBehaviour)this.strength);
+        this.strength = new TrackStrengthValueBehaviour((Component) SCROLL_OPTION_TITLE, this, new TrackStrengthValueBox());
+        behaviours.add((BlockEntityBehaviour) this.strength);
         this.strength.withCallback(this::onStrengthChanged);
         this.strength.value = 16;
     }
@@ -215,11 +218,11 @@ Clearable {
         if (!part.appliesPhysics()) {
             return;
         }
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Vec3 localPos = this.getTrackCenter(facing);
         this.queuedForcePos.set(localPos.x, localPos.y, localPos.z);
         MassData massData = subLevel.getMassTracker();
-        double normalMass = 1.0 / massData.getInverseNormalMass((Vector3dc)this.queuedForcePos, OrientedBoundingBox3d.UP);
+        double normalMass = 1.0 / massData.getInverseNormalMass((Vector3dc) this.queuedForcePos, OrientedBoundingBox3d.UP);
         double effectiveStrength = this.strength.getValue();
         double normalMassScaling = Math.min(normalMass / effectiveStrength, 1.0) * 8.0;
         double strengthMul = effectiveStrength * normalMassScaling * 2.0;
@@ -227,7 +230,7 @@ Clearable {
         double dampingStrength = effectiveStrength * normalMassScaling * 10.0 * this.dampingMultiplier;
         Pose3d pose = subLevel.logicalPose();
         Direction.Axis axis = facing.getAxis();
-        Vec3i side = Direction.get((Direction.AxisDirection)Direction.AxisDirection.POSITIVE, (Direction.Axis)axis).getNormal();
+        Vec3i side = Direction.get((Direction.AxisDirection) Direction.AxisDirection.POSITIVE, (Direction.Axis) axis).getNormal();
         Vector3dc sideD = this.getRotatedAxis(side);
         side = new Vec3i(side.getZ(), 0, side.getX());
         Vector3dc forwardD = this.getRotatedAxis(side);
@@ -237,18 +240,18 @@ Clearable {
             dampingStrength *= 1.2;
         }
         if (!this.isSuspensionActiveForPhysics(part, facing) && !isDrive) {
-            TerrainCastResult visualExtensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc)pose, part.contactSamples());
+            TerrainCastResult visualExtensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc) pose, part.contactSamples());
             double visualExtension = visualExtensionToTerrain.maxExtension() - part.radius();
-            this.extension = Mth.lerp((double)0.7, (double)this.extension, (double)Mth.clamp((double)visualExtension, (double)-0.45, (double)part.suspensionTravel()));
+            this.extension = Mth.lerp((double) 0.7, (double) this.extension, (double) Mth.clamp((double) visualExtension, (double) -0.45, (double) part.suspensionTravel()));
             return;
         }
         double suspensionRestDistance = isDrive ? part.radius() : 0.65;
-        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc)pose, isDrive ? part.contactSamples() : 1, isDrive ? 0.35 : 1.0, isDrive);
+        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc) pose, isDrive ? part.contactSamples() : 1, isDrive ? 0.35 : 1.0, isDrive);
         double maxExtension = extensionToTerrain.maxExtension();
         double springHeightCompensation = 0.0;
         double springMaxExtension = maxExtension - 0.0;
         if (!isDrive) {
-            this.extension = Mth.lerp((double)1.0, (double)this.extension, (double)maxExtension);
+            this.extension = Mth.lerp((double) 1.0, (double) this.extension, (double) maxExtension);
         } else {
             this.extension = 0.0;
         }
@@ -259,8 +262,8 @@ Clearable {
             return;
         }
         double distance = 0.10833333333333334 + springMaxExtension;
-        double springLength = Mth.clamp((double)(distance - part.radius()), (double)0.0, (double)suspensionRestDistance);
-        Vector3d velocity = Sable.HELPER.getVelocity(this.level, JOMLConversion.toJOML((Position)localPos));
+        double springLength = Mth.clamp((double) (distance - part.radius()), (double) 0.0, (double) suspensionRestDistance);
+        Vector3d velocity = Sable.HELPER.getVelocity(this.level, JOMLConversion.toJOML((Position) localPos));
         Vector3d localVelocity = pose.transformNormalInverse(velocity);
         double dampingForce = -localVelocity.y * dampingStrength;
         double springError = suspensionRestDistance - springLength;
@@ -272,25 +275,25 @@ Clearable {
         double baseMaxSpringImpulse = isDrive ? 35.0 : 30.0;
         double buriedImpulseScale = deeplyBuried ? 0.2 : 1.0;
         double maxSpringImpulse = Math.max(baseMaxSpringImpulse, normalMass * 0.9) * this.maxImpulseMultiplier * buriedImpulseScale;
-        double springForce = Mth.clamp((double)unclampedSpringForce, (double)(-maxSpringImpulse), (double)maxSpringImpulse);
+        double springForce = Mth.clamp((double) unclampedSpringForce, (double) (-maxSpringImpulse), (double) maxSpringImpulse);
         Vec3i rayHitNormal = extensionToTerrain.normal().getNormal();
-        Vec3 localForce = new Vec3(springForce * (double)rayHitNormal.getX(), springForce * (double)rayHitNormal.getY(), springForce * (double)rayHitNormal.getZ());
+        Vec3 localForce = new Vec3(springForce * (double) rayHitNormal.getX(), springForce * (double) rayHitNormal.getY(), springForce * (double) rayHitNormal.getZ());
         if (extensionToTerrain.subLevel() != null) {
             localForce = extensionToTerrain.subLevel().logicalPose().transformNormal(localForce);
         }
         localForce = pose.transformNormalInverse(localForce);
         this.queuedForce.set(localForce.x, localForce.y, localForce.z);
-        this.touchingFriction = extensionToTerrain.minInteractingBlock() != null ? SableTrackBlockEntity.fudgeFriction(PhysicsBlockPropertyHelper.getFriction((BlockState)this.level.getBlockState(extensionToTerrain.minInteractingBlock()))) : 1.0;
-        double brakeStrength = (double)this.level.getSignal(this.getBlockPos().above(), Direction.DOWN) / 15.0;
+        this.touchingFriction = extensionToTerrain.minInteractingBlock() != null ? SableTrackBlockEntity.fudgeFriction(PhysicsBlockPropertyHelper.getFriction((BlockState) this.level.getBlockState(extensionToTerrain.minInteractingBlock()))) : 1.0;
+        double brakeStrength = (double) this.level.getSignal(this.getBlockPos().above(), Direction.DOWN) / 15.0;
         double surfaceBraking = Math.min(this.touchingFriction, 1.0);
         double brakingFrictionStrength = (0.075 + brakeStrength * 0.3) * surfaceBraking * part.sideGripMultiplier();
         float kineticSpeed = Math.abs(this.getSharedTrackSpeed(facing)) < 0.05f ? 0.0f : this.getSharedTrackSpeed(facing);
-        this.queuedForce.fma(localVelocity.dot(forwardD) * -brakingFrictionStrength * strengthMul * timeStep + (double)kineticSpeed * (1.0 - brakeStrength) * surfaceBraking * -0.45 * part.driveMultiplier() * this.driveMultiplier * timeStep, forwardD);
+        this.queuedForce.fma(localVelocity.dot(forwardD) * -brakingFrictionStrength * strengthMul * timeStep + (double) kineticSpeed * (1.0 - brakeStrength) * surfaceBraking * -0.45 * part.driveMultiplier() * this.driveMultiplier * timeStep, forwardD);
         this.queuedForce.fma(localVelocity.dot(sideD) * -0.6 * this.touchingFriction * strengthMul * part.sideGripMultiplier() * this.gripMultiplier * timeStep, sideD);
         if (this.queuedForce.lengthSquared() < 1.0E-10) {
             return;
         }
-        this.forceTotal.applyImpulseAtPoint(subLevel, (Vector3dc)this.queuedForcePos, (Vector3dc)this.queuedForce);
+        this.forceTotal.applyImpulseAtPoint(subLevel, (Vector3dc) this.queuedForcePos, (Vector3dc) this.queuedForce);
         QUEUED_TRACKS.add(this);
     }
 
@@ -315,32 +318,32 @@ Clearable {
             return;
         }
         this.lastExtension = this.extension;
-        this.extension = Mth.lerp((double)0.7, (double)this.extension, (double)this.computeMaxExtension(part));
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        this.extension = Mth.lerp((double) 0.7, (double) this.extension, (double) this.computeMaxExtension(part));
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         float speed = this.getSharedTrackSpeed(facing);
-        double rpt = (double)(-speed) * Math.PI * 2.0 / 60.0 / 20.0 * (double)(15 - this.level.getSignal(this.getBlockPos().above(), Direction.DOWN)) / 15.0;
-        double attemptedAngularVelocity = Mth.lerp((double)0.2, (double)this.angularVelocity, (double)rpt);
+        double rpt = (double) (-speed) * Math.PI * 2.0 / 60.0 / 20.0 * (double) (15 - this.level.getSignal(this.getBlockPos().above(), Direction.DOWN)) / 15.0;
+        double attemptedAngularVelocity = Mth.lerp((double) 0.2, (double) this.angularVelocity, (double) rpt);
         if (!this.level.isClientSide) {
             return;
         }
-        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity)this);
+        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity) this);
         if (subLevel == null || this.liftedUp) {
             this.angularVelocity = attemptedAngularVelocity;
             this.lastAngle = this.angle;
             this.angle += this.angularVelocity;
             return;
         }
-        Vector3d velocity = Sable.HELPER.getVelocity(this.level, JOMLConversion.toJOML((Position)this.getTrackCenter(facing)));
+        Vector3d velocity = Sable.HELPER.getVelocity(this.level, JOMLConversion.toJOML((Position) this.getTrackCenter(facing)));
         Vector3d localVelocity = subLevel.logicalPose().transformNormalInverse(velocity).div(20.0);
         Direction.Axis axis = facing.getAxis();
-        Vec3i forward = Direction.get((Direction.AxisDirection)Direction.AxisDirection.POSITIVE, (Direction.Axis)axis).getNormal();
+        Vec3i forward = Direction.get((Direction.AxisDirection) Direction.AxisDirection.POSITIVE, (Direction.Axis) axis).getNormal();
         forward = new Vec3i(forward.getZ(), 0, forward.getX());
         Vector3dc forwardD = this.getRotatedAxis(forward);
         double translation = localVelocity.dot(forwardD);
         double circumference = Math.PI * part.radius() * 2.0;
         double angularDelta = translation / circumference * Math.PI * 2.0;
         if (this.touchingFriction < 1.0) {
-            angularDelta = Mth.lerp((double)this.touchingFriction, (double)attemptedAngularVelocity, (double)angularDelta);
+            angularDelta = Mth.lerp((double) this.touchingFriction, (double) attemptedAngularVelocity, (double) angularDelta);
         }
         this.lastAngle = this.angle;
         this.angle += angularDelta;
@@ -351,23 +354,23 @@ Clearable {
         if (part.role() == SableTrackRole.DRIVE) {
             return 0.0;
         }
-        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity)this);
+        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity) this);
         if (subLevel == null) {
             return part.suspensionTravel();
         }
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction.Axis axis = facing.getAxis();
-        Vec3i forward = Direction.get((Direction.AxisDirection)Direction.AxisDirection.POSITIVE, (Direction.Axis)axis).getNormal();
+        Vec3i forward = Direction.get((Direction.AxisDirection) Direction.AxisDirection.POSITIVE, (Direction.Axis) axis).getNormal();
         Vector3dc forwardD = this.getRotatedAxis(forward = new Vec3i(forward.getZ(), 0, forward.getX()));
-        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc)subLevel.logicalPose(), part.contactSamples());
+        TerrainCastResult extensionToTerrain = this.computeMaxExtensionToTerrain(forwardD, (Pose3dc) subLevel.logicalPose(), part.contactSamples());
         double unclampedExtension = extensionToTerrain.maxExtension() - part.radius();
         this.liftedUp = unclampedExtension > part.suspensionTravel();
-        this.touchingFriction = extensionToTerrain.minInteractingBlock() == null ? 1.0 : SableTrackBlockEntity.fudgeFriction(PhysicsBlockPropertyHelper.getFriction((BlockState)this.level.getBlockState(extensionToTerrain.minInteractingBlock())));
-        return Mth.clamp((double)unclampedExtension, (double)-0.45, (double)part.suspensionTravel());
+        this.touchingFriction = extensionToTerrain.minInteractingBlock() == null ? 1.0 : SableTrackBlockEntity.fudgeFriction(PhysicsBlockPropertyHelper.getFriction((BlockState) this.level.getBlockState(extensionToTerrain.minInteractingBlock())));
+        return Mth.clamp((double) unclampedExtension, (double) -0.45, (double) part.suspensionTravel());
     }
 
     private TerrainCastResult computeMaxExtensionToTerrain(Vector3dc forwardD, Pose3dc pose, int contactSamples, double sampleSpacing, boolean allowWalls) {
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Vec3 trackPosCenter = this.getTrackCenter(facing);
         double minExtension = 5.0;
         Direction minNormal = Direction.UP;
@@ -375,17 +378,18 @@ Clearable {
         BlockPos minInteractingBlock = null;
         for (int i = -contactSamples; i <= contactSamples; ++i) {
             double dist;
-            Vec3 localPosO = trackPosCenter.add(JOMLConversion.toMojang((Vector3dc)forwardD).scale((double)i * sampleSpacing));
+            Vec3 localPosO = trackPosCenter.add(JOMLConversion.toMojang((Vector3dc) forwardD).scale((double) i * sampleSpacing));
             Vec3 rayStart = localPosO.add(0.0, 1.25, 0.0);
             ClipContext clipContext = new ClipContext(rayStart, localPosO.subtract(0.0, 5.0, 0.0), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
-            ((ClipContextExtension)clipContext).sable$setIgnoredSubLevel(Sable.HELPER.getContaining((BlockEntity)this));
+            ((ClipContextExtension) clipContext).sable$setIgnoredSubLevel(Sable.HELPER.getContaining((BlockEntity) this));
             BlockHitResult clipResult = this.level.clip(clipContext);
             if (clipResult.getType() == HitResult.Type.MISS) continue;
-            SubLevel hitSubLevel = Sable.HELPER.getContaining(this.level, (Position)clipResult.getLocation());
+            SubLevel hitSubLevel = Sable.HELPER.getContaining(this.level, (Position) clipResult.getLocation());
             Vec3 localHitPos = pose.transformPositionInverse(hitSubLevel == null ? clipResult.getLocation() : hitSubLevel.logicalPose().transformPosition(clipResult.getLocation()));
-            if (hitSubLevel != null && localHitPos.y >= trackPosCenter.y - 1.0E-4 || localPosO.distanceTo(localHitPos) < 0.05 || (dist = Math.max(0.0, trackPosCenter.y - localHitPos.y)) <= 1.0E-5 && localHitPos.y <= trackPosCenter.y) continue;
+            if (hitSubLevel != null && localHitPos.y >= trackPosCenter.y - 1.0E-4 || localPosO.distanceTo(localHitPos) < 0.05 || (dist = Math.max(0.0, trackPosCenter.y - localHitPos.y)) <= 1.0E-5 && localHitPos.y <= trackPosCenter.y)
+                continue;
             Direction dir = clipResult.getDirection();
-            Vector3d hitNormal = new Vector3d((double)dir.getStepX(), (double)dir.getStepY(), (double)dir.getStepZ());
+            Vector3d hitNormal = new Vector3d((double) dir.getStepX(), (double) dir.getStepY(), (double) dir.getStepZ());
             if (hitSubLevel != null) {
                 hitSubLevel.logicalPose().transformNormal(hitNormal);
             }
@@ -408,16 +412,16 @@ Clearable {
     }
 
     private void applyBatchedForces() {
-        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity)this);
+        SubLevel subLevel = Sable.HELPER.getContaining((BlockEntity) this);
         if (subLevel == null) {
             return;
         }
-        RigidBodyHandle.of((ServerSubLevel)((ServerSubLevel)subLevel)).applyForcesAndReset(this.forceTotal);
+        RigidBodyHandle.of((ServerSubLevel) ((ServerSubLevel) subLevel)).applyForcesAndReset(this.forceTotal);
     }
 
     @NotNull
     private Vector3dc getRotatedAxis(Vec3i normal) {
-        return new Vector3d((double)normal.getX(), (double)normal.getY(), (double)normal.getZ());
+        return new Vector3d((double) normal.getX(), (double) normal.getY(), (double) normal.getZ());
     }
 
     private Vec3 getTrackCenter(Direction facing) {
@@ -432,13 +436,13 @@ Clearable {
                 physicsYOffset = 0.25;
             }
         }
-        return this.getBlockPos().relative(facing).getCenter().add(Vec3.atLowerCornerOf((Vec3i)facing.getClockWise().getNormal()).scale(this.lateralOffset)).add(Vec3.atLowerCornerOf((Vec3i)facing.getNormal()).scale(this.longitudinalOffset)).add(0.0, currentHeightOffset + physicsYOffset, 0.0);
+        return this.getBlockPos().relative(facing).getCenter().add(Vec3.atLowerCornerOf((Vec3i) facing.getClockWise().getNormal()).scale(this.lateralOffset)).add(Vec3.atLowerCornerOf((Vec3i) facing.getNormal()).scale(this.longitudinalOffset)).add(0.0, currentHeightOffset + physicsYOffset, 0.0);
     }
 
     public SableTrackRole baseRole() {
         Block block = this.getBlockState().getBlock();
         if (block instanceof SableTrackBlock) {
-            SableTrackBlock trackBlock = (SableTrackBlock)block;
+            SableTrackBlock trackBlock = (SableTrackBlock) block;
             return trackBlock.role();
         }
         return SableTrackRole.MOUNT;
@@ -454,7 +458,7 @@ Clearable {
 
     public double adjustLateralOffset(int direction) {
         double previous = this.lateralOffset;
-        this.lateralOffset = Mth.clamp((double)((double)Math.round((this.lateralOffset + (double)direction * 0.125) / 0.125) * 0.125), (double)-1.0, (double)1.0);
+        this.lateralOffset = Mth.clamp((double) ((double) Math.round((this.lateralOffset + (double) direction * 0.125) / 0.125) * 0.125), (double) -1.0, (double) 1.0);
         if (Math.abs(previous - this.lateralOffset) > 1.0E-6) {
             this.setChanged();
             if (this.level != null && !this.level.isClientSide) {
@@ -467,7 +471,7 @@ Clearable {
 
     public double adjustLongitudinalOffset(int direction) {
         double previous = this.longitudinalOffset;
-        this.longitudinalOffset = Mth.clamp((double)((double)Math.round((this.longitudinalOffset + (double)direction * 0.125) / 0.125) * 0.125), (double)-1.0, (double)1.0);
+        this.longitudinalOffset = Mth.clamp((double) ((double) Math.round((this.longitudinalOffset + (double) direction * 0.125) / 0.125) * 0.125), (double) -1.0, (double) 1.0);
         if (Math.abs(previous - this.longitudinalOffset) > 1.0E-6) {
             this.setChanged();
             if (this.level != null && !this.level.isClientSide) {
@@ -480,7 +484,7 @@ Clearable {
 
     public double adjustHeightOffset(int direction, boolean sideInteraction) {
         double previous = this.heightOffset;
-        this.heightOffset = Mth.clamp((double)((double)Math.round((this.heightOffset + (double)direction * 0.125) / 0.125) * 0.125), (double)-0.75, (double)0.75);
+        this.heightOffset = Mth.clamp((double) ((double) Math.round((this.heightOffset + (double) direction * 0.125) / 0.125) * 0.125), (double) -0.75, (double) 0.75);
         if (Math.abs(previous - this.heightOffset) > 1.0E-6) {
             this.setChanged();
             if (this.level != null && !this.level.isClientSide) {
@@ -494,7 +498,7 @@ Clearable {
     public double adjustTuning(String key, int direction) {
         if (key.equals("strength")) {
             int current = this.strength == null ? 16 : this.strength.getValue();
-            int next = Mth.clamp((int)(current + direction * 5), (int)5, (int)180);
+            int next = Mth.clamp((int) (current + direction * 5), (int) 5, (int) 180);
             if (this.strength != null) {
                 this.strength.value = next;
             }
@@ -507,7 +511,7 @@ Clearable {
         }
         double step = key.equals("drive") ? 0.1 : 0.05;
         double previous = this.getTuning(key);
-        double next = Mth.clamp((double)((double)Math.round((previous + (double)direction * step) / step) * step), (double)0.1, (double)4.0);
+        double next = Mth.clamp((double) ((double) Math.round((previous + (double) direction * step) / step) * step), (double) 0.1, (double) 4.0);
         switch (key) {
             case "spring": {
                 this.springMultiplier = next;
@@ -590,23 +594,23 @@ Clearable {
     }
 
     public double getLerpedExtension(float partialTicks) {
-        return Mth.lerp((double)partialTicks, (double)this.lastExtension, (double)this.extension);
+        return Mth.lerp((double) partialTicks, (double) this.lastExtension, (double) this.extension);
     }
 
     public double getLerpedLateralOffset(float partialTicks) {
-        return Mth.lerp((double)partialTicks, (double)this.lastLateralOffset, (double)this.lateralOffset);
+        return Mth.lerp((double) partialTicks, (double) this.lastLateralOffset, (double) this.lateralOffset);
     }
 
     public double getLerpedLongitudinalOffset(float partialTicks) {
-        return Mth.lerp((double)partialTicks, (double)this.lastLongitudinalOffset, (double)this.longitudinalOffset);
+        return Mth.lerp((double) partialTicks, (double) this.lastLongitudinalOffset, (double) this.longitudinalOffset);
     }
 
     public double getLerpedHeightOffset(float partialTicks) {
-        return Mth.lerp((double)partialTicks, (double)this.lastHeightOffset, (double)this.heightOffset);
+        return Mth.lerp((double) partialTicks, (double) this.lastHeightOffset, (double) this.heightOffset);
     }
 
     public float getLerpedAngle(float partialTicks) {
-        return (float)Mth.lerp((double)partialTicks, (double)this.lastAngle, (double)this.angle);
+        return (float) Mth.lerp((double) partialTicks, (double) this.lastAngle, (double) this.angle);
     }
 
     public float getSharedTrackAngle(Direction facing, float partialTicks) {
@@ -623,7 +627,7 @@ Clearable {
             start = candidate2;
         }
         SableTrackBlockEntity fallback = this;
-        for (int step = 0; step <= 32 && (blockEntity = this.level.getBlockEntity(candidate = start.relative(along, step))) instanceof SableTrackBlockEntity && (track = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing; ++step) {
+        for (int step = 0; step <= 32 && (blockEntity = this.level.getBlockEntity(candidate = start.relative(along, step))) instanceof SableTrackBlockEntity && (track = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing; ++step) {
             if (!track.effectivePart().appliesPhysics()) continue;
             if (fallback == this) {
                 fallback = track;
@@ -655,7 +659,7 @@ Clearable {
     public float getSharedTrackSpeed(Direction facing) {
         float ownSpeed;
         float f = ownSpeed = facing.getAxis() == Direction.Axis.X ? -this.getSpeed() : this.getSpeed();
-        if ((double)Math.abs(ownSpeed) > 1.0E-4 && this.effectiveRole() == SableTrackRole.DRIVE) {
+        if ((double) Math.abs(ownSpeed) > 1.0E-4 && this.effectiveRole() == SableTrackRole.DRIVE) {
             return ownSpeed;
         }
         if (this.level == null) {
@@ -664,11 +668,11 @@ Clearable {
         Direction along = facing.getClockWise();
         for (int step = 1; step <= 16; ++step) {
             float positive = this.driveSpeedAt(this.getBlockPos().relative(along, step), facing);
-            if ((double)Math.abs(positive) > 1.0E-4) {
+            if ((double) Math.abs(positive) > 1.0E-4) {
                 return positive;
             }
             float negative = this.driveSpeedAt(this.getBlockPos().relative(along.getOpposite(), step), facing);
-            if (!((double)Math.abs(negative) > 1.0E-4)) continue;
+            if (!((double) Math.abs(negative) > 1.0E-4)) continue;
             return negative;
         }
         return this.effectiveRole() == SableTrackRole.DRIVE ? ownSpeed : 0.0f;
@@ -687,7 +691,7 @@ Clearable {
             return false;
         }
         boolean changed = this.setBeltColor(color);
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction along = facing.getClockWise();
         changed |= this.copyBeltColorAlong(along, facing, color);
         return changed |= this.copyBeltColorAlong(along.getOpposite(), facing, color);
@@ -698,7 +702,7 @@ Clearable {
             return;
         }
         this.resetTuning();
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction along = facing.getClockWise();
         this.resetTuningAlong(along, facing);
         this.resetTuningAlong(along.getOpposite(), facing);
@@ -716,8 +720,8 @@ Clearable {
     private void syncSuspensionModelState() {
         boolean useSuspensionModel = this.effectiveRole() == SableTrackRole.SUSPENSION;
         BlockState state = this.getBlockState();
-        if (state.hasProperty((Property)SableTrackBlock.SUSPENSION_MODEL) && (Boolean)state.getValue((Property)SableTrackBlock.SUSPENSION_MODEL) != useSuspensionModel) {
-            this.level.setBlock(this.worldPosition, (BlockState)state.setValue((Property)SableTrackBlock.SUSPENSION_MODEL, (Comparable)Boolean.valueOf(useSuspensionModel)), 2);
+        if (state.hasProperty((Property) SableTrackBlock.SUSPENSION_MODEL) && (Boolean) state.getValue((Property) SableTrackBlock.SUSPENSION_MODEL) != useSuspensionModel) {
+            this.level.setBlock(this.worldPosition, (BlockState) state.setValue((Property) SableTrackBlock.SUSPENSION_MODEL, (Comparable) Boolean.valueOf(useSuspensionModel)), 2);
         }
     }
 
@@ -727,7 +731,7 @@ Clearable {
             SableTrackBlockEntity neighbor;
             BlockPos targetPos = this.getBlockPos().relative(direction, step);
             BlockEntity blockEntity = this.level.getBlockEntity(targetPos);
-            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
+            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
                 return changed;
             }
             changed |= neighbor.setBeltColor(color);
@@ -740,7 +744,7 @@ Clearable {
             SableTrackBlockEntity neighbor;
             BlockPos targetPos = this.getBlockPos().relative(direction, step);
             BlockEntity blockEntity = this.level.getBlockEntity(targetPos);
-            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
+            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
                 return;
             }
             neighbor.resetTuning();
@@ -789,7 +793,7 @@ Clearable {
         }
         Direction along = facing.getClockWise();
         BlockEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(along));
-        if (blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing) {
+        if (blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing) {
             return neighbor.getLerpedExtension(partialTicks) - this.getLerpedExtension(partialTicks);
         }
         return 0.0;
@@ -800,7 +804,7 @@ Clearable {
         if (this.level == null || !((blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(side))) instanceof SableTrackBlockEntity)) {
             return false;
         }
-        SableTrackBlockEntity neighbor = (SableTrackBlockEntity)blockEntity;
+        SableTrackBlockEntity neighbor = (SableTrackBlockEntity) blockEntity;
         return neighbor.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) && neighbor.effectivePart().appliesPhysics();
     }
 
@@ -837,19 +841,19 @@ Clearable {
     private boolean isSuspensionAt(BlockPos pos, Direction facing) {
         SableTrackBlockEntity neighbor;
         BlockEntity blockEntity = this.level.getBlockEntity(pos);
-        return blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing && neighbor.effectiveRole() == SableTrackRole.SUSPENSION;
+        return blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing && neighbor.effectiveRole() == SableTrackRole.SUSPENSION;
     }
 
     private boolean isSameTrackLine(BlockPos pos, Direction facing) {
         SableTrackBlockEntity neighbor;
         BlockEntity blockEntity = this.level.getBlockEntity(pos);
-        return blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing;
+        return blockEntity instanceof SableTrackBlockEntity && (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing;
     }
 
     private float driveSpeedAt(BlockPos pos, Direction facing) {
         SableTrackBlockEntity track;
         BlockEntity blockEntity = this.level.getBlockEntity(pos);
-        if (!(blockEntity instanceof SableTrackBlockEntity) || (track = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing || track.effectiveRole() != SableTrackRole.DRIVE) {
+        if (!(blockEntity instanceof SableTrackBlockEntity) || (track = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing || track.effectiveRole() != SableTrackRole.DRIVE) {
             return 0.0f;
         }
         return facing.getAxis() == Direction.Axis.X ? -track.getSpeed() : track.getSpeed();
@@ -891,7 +895,7 @@ Clearable {
         this.protectedStrengthValue = value;
         this.setChanged();
         this.sendData();
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction along = facing.getClockWise();
         this.copyStrengthAlong(along, facing, value);
         this.copyStrengthAlong(along.getOpposite(), facing, value);
@@ -902,7 +906,7 @@ Clearable {
             return;
         }
         this.setTuning(key, value);
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction along = facing.getClockWise();
         this.copyTuningAlong(along, facing, key, value);
         this.copyTuningAlong(along.getOpposite(), facing, key, value);
@@ -913,7 +917,7 @@ Clearable {
             SableTrackBlockEntity neighbor;
             BlockPos targetPos = this.getBlockPos().relative(direction, step);
             BlockEntity blockEntity = this.level.getBlockEntity(targetPos);
-            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
+            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
                 return;
             }
             neighbor.setTuning(key, value);
@@ -924,7 +928,7 @@ Clearable {
         if (this.level == null || this.level.isClientSide) {
             return;
         }
-        Direction facing = (Direction)this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
+        Direction facing = (Direction) this.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING);
         Direction along = facing.getClockWise();
         this.copyOffsetAlong(along, facing, key, value, sideInteraction);
         this.copyOffsetAlong(along.getOpposite(), facing, key, value, sideInteraction);
@@ -935,7 +939,7 @@ Clearable {
             SableTrackBlockEntity neighbor;
             BlockPos targetPos = this.getBlockPos().relative(direction, step);
             BlockEntity blockEntity = this.level.getBlockEntity(targetPos);
-            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity)blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
+            if (!(blockEntity instanceof SableTrackBlockEntity) || (neighbor = (SableTrackBlockEntity) blockEntity).getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) != facing) {
                 return;
             }
             SableTrackRole role = neighbor.effectiveRole();
@@ -1008,23 +1012,26 @@ Clearable {
     }
 
     private static int tuningToScroll(double value) {
-        return Mth.clamp((int)((int)Math.round(5.0 + (Mth.clamp((double)value, (double)0.1, (double)4.0) - 0.1) / 3.9 * 175.0)), (int)5, (int)180);
+        return Mth.clamp((int) ((int) Math.round(5.0 + (Mth.clamp((double) value, (double) 0.1, (double) 4.0) - 0.1) / 3.9 * 175.0)), (int) 5, (int) 180);
     }
 
     private static double scrollToTuning(int value) {
-        return 0.1 + (double)(Mth.clamp((int)value, (int)5, (int)180) - 5) / 175.0 * 3.9;
+        return 0.1 + (double) (Mth.clamp((int) value, (int) 5, (int) 180) - 5) / 175.0 * 3.9;
     }
 
     private void copyStrengthAlong(Direction direction, Direction facing, int value) {
         for (int step = 1; step <= 16; ++step) {
             SableTrackBlockEntity neighbor;
-            block4: {
-                block3: {
+            block4:
+            {
+                block3:
+                {
                     BlockPos targetPos = this.getBlockPos().relative(direction, step);
                     BlockEntity blockEntity = this.level.getBlockEntity(targetPos);
                     if (!(blockEntity instanceof SableTrackBlockEntity)) break block3;
-                    neighbor = (SableTrackBlockEntity)blockEntity;
-                    if (neighbor.strength != null && neighbor.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing) break block4;
+                    neighbor = (SableTrackBlockEntity) blockEntity;
+                    if (neighbor.strength != null && neighbor.getBlockState().getValue(SableTrackBlock.HORIZONTAL_FACING) == facing)
+                        break block4;
                 }
                 return;
             }
@@ -1095,8 +1102,8 @@ Clearable {
         if (tag.contains("VisualSuspensionHidden")) {
             this.visualSuspensionHidden = tag.getBoolean("VisualSuspensionHidden");
         }
-        this.beltColor = tag.contains("BeltColor") ? DyeColor.byName((String)tag.getString("BeltColor"), null) : null;
-        this.heldItem = ItemStack.parseOptional((HolderLookup.Provider)registries, (CompoundTag)tag.getCompound("HeldTrackItem"));
+        this.beltColor = tag.contains("BeltColor") ? DyeColor.byName((String) tag.getString("BeltColor"), null) : null;
+        this.heldItem = ItemStack.parseOptional((HolderLookup.Provider) registries, (CompoundTag) tag.getCompound("HeldTrackItem"));
         if (clientPacket) {
             this.extension = clientExtension;
             this.lastExtension = clientLastExtension;
@@ -1115,12 +1122,12 @@ Clearable {
     }
 
     private static class TrackStrengthValueBehaviour
-    extends ScrollValueBehaviour {
+            extends ScrollValueBehaviour {
         private static final int MAX_STRENGTH = 180;
         private final SableTrackBlockEntity owner;
 
         public TrackStrengthValueBehaviour(Component label, SableTrackBlockEntity be, ValueBoxTransform slot) {
-            super(label, (SmartBlockEntity)be, slot);
+            super(label, (SmartBlockEntity) be, slot);
             this.owner = be;
             this.between(5, 180);
         }
@@ -1128,23 +1135,23 @@ Clearable {
         public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
             SuspensionKeyItem.TuningMode mode = player.getMainHandItem().is(TracksItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getMainHandItem()) : (player.getOffhandItem().is(TracksItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getOffhandItem()) : SuspensionKeyItem.TuningMode.STRENGTH);
             this.owner.selectScrollTuningMode(mode.key);
-            if (this.owner.level != null && ((SableTrackBlockEntity)this.owner).level.isClientSide) {
-                PacketDistributor.sendToServer((CustomPacketPayload)new SelectTrackTuningModePayload(this.owner.getBlockPos(), mode.key), (CustomPacketPayload[])new CustomPacketPayload[0]);
+            if (this.owner.level != null && ((SableTrackBlockEntity) this.owner).level.isClientSide) {
+                PacketDistributor.sendToServer((CustomPacketPayload) new SelectTrackTuningModePayload(this.owner.getBlockPos(), mode.key), (CustomPacketPayload[]) new CustomPacketPayload[0]);
             }
             this.value = mode == SuspensionKeyItem.TuningMode.STRENGTH ? this.owner.protectedStrengthValue : SableTrackBlockEntity.tuningToScroll(this.owner.getTuning(mode.key));
-            return new ValueSettingsBoard(mode.title(), 180, 20, (List)ImmutableList.of((Object)mode.title()), new ValueSettingsFormatter(ValueSettings::format));
+            return new ValueSettingsBoard(mode.title(), 180, 20, (List) ImmutableList.of((Object) mode.title()), new ValueSettingsFormatter(ValueSettings::format));
         }
     }
 
     private static final class TrackStrengthValueBox
-    extends ValueBoxTransform {
+            extends ValueBoxTransform {
         private TrackStrengthValueBox() {
         }
 
         public void rotate(LevelAccessor level, BlockPos pos, BlockState state, PoseStack ms) {
-            Direction facing = (Direction)state.getValue(SableTrackBlock.HORIZONTAL_FACING);
-            float yRot = AngleHelper.horizontalAngle((Direction)facing) + 180.0f;
-            ((PoseTransformStack)TransformStack.of((PoseStack)ms).rotateYDegrees(yRot)).rotateXDegrees(90.0f);
+            Direction facing = (Direction) state.getValue(SableTrackBlock.HORIZONTAL_FACING);
+            float yRot = AngleHelper.horizontalAngle((Direction) facing) + 180.0f;
+            ((PoseTransformStack) TransformStack.of((PoseStack) ms).rotateYDegrees(yRot)).rotateXDegrees(90.0f);
         }
 
         public boolean testHit(LevelAccessor level, BlockPos pos, BlockState state, Vec3 localHit) {
@@ -1152,17 +1159,18 @@ Clearable {
                 return true;
             }
             Vec3 offset = this.getLocalOffset(level, pos, state);
-            return offset != null && localHit.distanceTo(offset) < (double)(this.scale / 3.0f);
+            return offset != null && localHit.distanceTo(offset) < (double) (this.scale / 3.0f);
         }
 
         public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
-            Direction facing = (Direction)state.getValue(SableTrackBlock.HORIZONTAL_FACING);
-            float stateAngle = AngleHelper.horizontalAngle((Direction)facing) + 180.0f;
-            return VecHelper.rotateCentered((Vec3)VecHelper.voxelSpace((double)8.0, (double)15.5, (double)11.0), (double)stateAngle, (Direction.Axis)Direction.Axis.Y);
+            Direction facing = (Direction) state.getValue(SableTrackBlock.HORIZONTAL_FACING);
+            float stateAngle = AngleHelper.horizontalAngle((Direction) facing) + 180.0f;
+            return VecHelper.rotateCentered((Vec3) VecHelper.voxelSpace((double) 8.0, (double) 15.5, (double) 11.0), (double) stateAngle, (Direction.Axis) Direction.Axis.Y);
         }
     }
 
-    private record TerrainCastResult(double maxExtension, @NotNull Direction normal, @Nullable SubLevel subLevel, @Nullable BlockPos minInteractingBlock) {
+    private record TerrainCastResult(double maxExtension, @NotNull Direction normal, @Nullable SubLevel subLevel,
+                                     @Nullable BlockPos minInteractingBlock) {
     }
 
     private record SuspensionSegment(int index, int count) {
