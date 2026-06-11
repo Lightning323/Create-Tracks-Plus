@@ -11,25 +11,17 @@
  */
 package org.lightning323.createkinetic.registry;
 
-import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.world.item.Item;
 import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
-import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
-import dev.simulated_team.simulated.registrate.simulated_tab.CreativeTabItemTransforms;
-import net.minecraft.world.item.Item;
 
 public class TracksItems {
     private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();
 
     public static final ItemEntry<Item> SMALL_SUSPENSION_TRACK = REGISTRATE.item("small_suspension_track", Item::new).register();
-    public static final ItemEntry<Item> SUSPENSION_TRACK = ((ItemBuilder) REGISTRATE.item("suspension_track", Item::new).transform((NonNullFunction) CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
-    public static final ItemEntry<Item> LARGE_SUSPENSION_TRACK = ((ItemBuilder) REGISTRATE.item("large_suspension_track", Item::new).transform((NonNullFunction) CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
     public static final ItemEntry<Item> SMALL_TRACK_DRIVE_WHEEL = REGISTRATE.item("small_track_drive_wheel", Item::new).register();
-    public static final ItemEntry<Item> TRACK_DRIVE_WHEEL = ((ItemBuilder) REGISTRATE.item("track_drive_wheel", Item::new).transform((NonNullFunction) CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
-    public static final ItemEntry<Item> LARGE_TRACK_DRIVE_WHEEL = ((ItemBuilder) REGISTRATE.item("large_track_drive_wheel", Item::new).transform((NonNullFunction) CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
     public static final ItemEntry<SuspensionKeyItem> SUSPENSION_KEY = REGISTRATE.item("suspension_key", SuspensionKeyItem::new).register();
 
 

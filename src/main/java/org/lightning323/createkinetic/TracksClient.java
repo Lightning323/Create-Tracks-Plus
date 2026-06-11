@@ -117,11 +117,7 @@ public class TracksClient {
         if (!built.get()) {
             registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_mount", TracksBlocks.TRACK_MOUNT::asItem);
             registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", TracksItems.SMALL_SUSPENSION_TRACK::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_track", TracksItems.SUSPENSION_TRACK::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", TracksItems.LARGE_SUSPENSION_TRACK::get);
             registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_track_drive_wheel", TracksItems.SMALL_TRACK_DRIVE_WHEEL::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_drive_wheel", TracksItems.TRACK_DRIVE_WHEEL::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "large_track_drive_wheel", TracksItems.LARGE_TRACK_DRIVE_WHEEL::get);
             registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_key", TracksItems.SUSPENSION_KEY::get);
             built.set(true);
         }

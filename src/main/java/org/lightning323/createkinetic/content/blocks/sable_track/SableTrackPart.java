@@ -40,20 +40,8 @@ public enum SableTrackPart {
         if (stack.is(TracksItems.SMALL_SUSPENSION_TRACK.asItem())) {
             return SMALL_SUSPENSION;
         }
-        if (stack.is(TracksItems.SUSPENSION_TRACK.asItem())) {
-            return SUSPENSION;
-        }
-        if (stack.is(TracksItems.LARGE_SUSPENSION_TRACK.asItem())) {
-            return LARGE_SUSPENSION;
-        }
         if (stack.is(TracksItems.SMALL_TRACK_DRIVE_WHEEL.asItem())) {
             return SMALL_DRIVE;
-        }
-        if (stack.is(TracksItems.TRACK_DRIVE_WHEEL.asItem())) {
-            return DRIVE;
-        }
-        if (stack.is(TracksItems.LARGE_TRACK_DRIVE_WHEEL.asItem())) {
-            return LARGE_DRIVE;
         }
         return NONE;
     }
