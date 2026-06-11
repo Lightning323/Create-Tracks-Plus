@@ -4,33 +4,45 @@
 package org.lightning323.createkinetic;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 import dev.ryanhcode.offroad.index.OffroadBlockEntityTypes;
+import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
+import dev.simulated_team.simulated.registrate.simulated_tab.CreativeTabItemTransforms;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.lightning323.createkinetic.client.TrackRenderTuning;
 import org.lightning323.createkinetic.client.TrackTuningScreen;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRenderer;
 import org.lightning323.createkinetic.content.blocks.wheel_mount.AdjustableWheelMountRenderer;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
-import org.lightning323.createkinetic.registry.TracksBlockEntityTypes;
-import org.lightning323.createkinetic.registry.TracksItems;
-import org.lightning323.createkinetic.registry.TracksPartialModels;
-import org.lightning323.createkinetic.registry.TracksSpriteShifts;
+import org.lightning323.createkinetic.registry.*;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
+
+import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 
 @Mod(value = CreateKinetic.MOD_ID, dist = {Dist.CLIENT})
 public class TracksClient {
@@ -44,6 +56,7 @@ public class TracksClient {
     public static void init(IEventBus modBus) {
         modBus.addListener(TracksClient::clientSetup);
         modBus.addListener(TracksClient::registerKeys);
+        modBus.addListener(TracksClient::buildContents);
         NeoForge.EVENT_BUS.addListener(EventPriority.NORMAL, TracksClient::clientTick);
         TracksPartialModels.init();
         TracksSpriteShifts.init();
@@ -83,6 +96,35 @@ public class TracksClient {
 
     public static void openTuningScreen() {
         Minecraft.getInstance().setScreen((Screen) new TrackTuningScreen());
+    }
+
+
+    /**
+     * Register items in the existing tabs
+     */
+    private static AtomicBoolean built = new AtomicBoolean(false);
+
+    public static final ResourceLocation SIMULATED_CREATIVE_SECTION = ResourceLocation.fromNamespaceAndPath("simulated", "simulated");
+    public static final ResourceLocation AERONAUTICS_CREATIVE_SECTION = ResourceLocation.fromNamespaceAndPath("aeronautics", "aeronautics");
+    public static final ResourceLocation OFFROAD_CREATIVE_SECTION = ResourceLocation.fromNamespaceAndPath("offroad", "offroad");
+
+    private static void registerSectionItem(ResourceLocation sectionId, String itemPath, Supplier<Item> itemSupplier) {
+        SimulatedRegistrate.TAB_ITEMS.add(itemSupplier);
+        SimulatedRegistrate.ITEM_TO_SECTION.put(ResourceLocation.fromNamespaceAndPath(MOD_ID, itemPath), sectionId);
+    }
+
+    public static void buildContents(BuildCreativeModeTabContentsEvent event) {
+        if (!built.get()) {
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_mount", TracksBlocks.TRACK_MOUNT::asItem);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", TracksItems.SMALL_SUSPENSION_TRACK::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_track", TracksItems.SUSPENSION_TRACK::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", TracksItems.LARGE_SUSPENSION_TRACK::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_track_drive_wheel", TracksItems.SMALL_TRACK_DRIVE_WHEEL::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_drive_wheel", TracksItems.TRACK_DRIVE_WHEEL::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "large_track_drive_wheel", TracksItems.LARGE_TRACK_DRIVE_WHEEL::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_key", TracksItems.SUSPENSION_KEY::get);
+            built.set(true);
+        }
     }
 
 }

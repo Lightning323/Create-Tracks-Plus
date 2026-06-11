@@ -22,7 +22,11 @@ import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
+import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock;
@@ -35,7 +39,8 @@ import net.minecraft.world.level.material.MapColor;
 public class TracksBlocks {
     private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();
     @SuppressWarnings("removal")
-    public static final BlockEntry<SableTrackBlock> TRACK_MOUNT = REGISTRATE.block("track_mount", properties -> new SableTrackBlock(properties, SableTrackRole.MOUNT))
+    public static final BlockEntry<SableTrackBlock> TRACK_MOUNT = REGISTRATE.block("track_mount",
+                    properties -> new SableTrackBlock(properties, SableTrackRole.MOUNT))
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion().isRedstoneConductor((state, level, pos) -> false))
             .transform(TagGen.axeOrPickaxe())

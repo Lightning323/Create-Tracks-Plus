@@ -71,6 +71,7 @@ public class CreateKinetic {
         modBus.addListener(CreateKinetic::registerPayloads);
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
         CreateKinetic.setTooltips();
+        TracksClient.init(modBus);
         TracksBlocks.init();
         TracksBlockEntityTypes.init();
         TracksItems.init();

@@ -4,10 +4,16 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+
+import java.util.HashMap;
+import java.util.function.Supplier;
 
 public final class KineticRegistrate extends CreateRegistrate {
     private KineticRegistrate(String modid) {
@@ -17,6 +23,7 @@ public final class KineticRegistrate extends CreateRegistrate {
     public static KineticRegistrate create(String modid) {
         return new KineticRegistrate(modid);
     }
+
 
     /**
      * Simulated registrate is how we make a custom creative tab,

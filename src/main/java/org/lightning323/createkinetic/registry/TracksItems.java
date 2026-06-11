@@ -32,6 +32,7 @@ public class TracksItems {
     public static final ItemEntry<Item> LARGE_TRACK_DRIVE_WHEEL = ((ItemBuilder) REGISTRATE.item("large_track_drive_wheel", Item::new).transform((NonNullFunction) CreativeTabItemTransforms.VisibilityType.INVISIBLE.applyItem())).register();
     public static final ItemEntry<SuspensionKeyItem> SUSPENSION_KEY = REGISTRATE.item("suspension_key", SuspensionKeyItem::new).register();
 
+
     public static void init() {
     }
 }
