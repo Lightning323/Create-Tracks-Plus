@@ -32,11 +32,10 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-libs/
-
 ### Minecraft Modding ###
 run/
 !**/src/**/run/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+run
