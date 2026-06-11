@@ -12,12 +12,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import org.lightning323.createkinetic.CreateKinetic;
+import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlockEntity;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRenderer;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 
 public class TracksBlockEntityTypes {
-    private static final SimulatedRegistrate REGISTRATE = CreateKinetic.getRegistrate();
+    private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();
     public static final BlockEntityEntry<SableTrackBlockEntity> SABLE_TRACK = REGISTRATE.blockEntity("sable_track", SableTrackBlockEntity::new)
             .validBlocks(new NonNullSupplier[]{TracksBlocks.TRACK_MOUNT})
             .renderer(() -> (BlockEntityRendererProvider<SableTrackBlockEntity>) SableTrackRenderer::new)

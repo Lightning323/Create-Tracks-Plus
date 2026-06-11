@@ -1,6 +1,6 @@
 /*
  * Decompiled with CFR 0.152.
- * 
+ *
  * Could not load the following classes:
  *  com.simibubi.create.foundation.item.ItemDescription$Modifier
  *  com.simibubi.create.foundation.item.KineticStats
@@ -21,6 +21,7 @@
  */
 package org.lightning323.createkinetic;
 
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
@@ -55,16 +56,25 @@ import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
 
 import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 
-@Mod(value=MOD_ID)
+@Mod(value = MOD_ID)
 public class CreateKinetic {
     public static final String MOD_ID = "tracks";
     public static final String trackHiddenTag = "tracks_hidden";
-    private static final NonNullSupplier<SimulatedRegistrate> REGISTRATE = NonNullSupplier.lazy(() -> (SimulatedRegistrate)new SimulatedRegistrate(CreateKinetic.path(MOD_ID), MOD_ID).defaultCreativeTab((ResourceKey)null));
+
+    private static final NonNullSupplier<KineticRegistrate> REGISTRATE = KineticRegistrate.getKineticRegistrate(MOD_ID);
+
+    public static KineticRegistrate getRegistrate() {
+        return REGISTRATE.get();
+    }
 
     public CreateKinetic(IEventBus modBus, ModContainer modContainer) {
         modBus.addListener(CreateKinetic::registerPayloads);
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
-        CreateKinetic.init();
+        CreateKinetic.setTooltips();
+        TracksBlocks.init();
+        TracksBlockEntityTypes.init();
+        TracksItems.init();
+        SableEventPlatform.INSTANCE.onPhysicsTick(TracksCommonEvents::physicsTick);
         getRegistrate().registerEventListeners(modBus);
     }
 
@@ -79,31 +89,20 @@ public class CreateKinetic {
         }));
     }
 
-    public static void init() {
-        CreateKinetic.setTooltips();
-        TracksBlocks.init();
-        TracksBlockEntityTypes.init();
-        TracksItems.init();
-        SableEventPlatform.INSTANCE.onPhysicsTick(TracksCommonEvents::physicsTick);
-    }
 
     private static void setTooltips() {
         CreateKinetic.getRegistrate().setTooltipModifierFactory(item -> {
             Rarity rarity = item.getDefaultInstance().getRarity();
             FontHelper.Palette color = FontHelper.Palette.STANDARD_CREATE;
             if (rarity == Rarity.EPIC) {
-                color = new FontHelper.Palette(TooltipHelper.styleFromColor((int)SimColors.EPIC_OURPLE), TooltipHelper.styleFromColor((ChatFormatting)rarity.color()));
+                color = new FontHelper.Palette(TooltipHelper.styleFromColor((int) SimColors.EPIC_OURPLE), TooltipHelper.styleFromColor((ChatFormatting) rarity.color()));
             }
-            return new ItemDescription.Modifier(item, color).andThen(TooltipModifier.mapNull((TooltipModifier)KineticStats.create((Item)item)));
+            return new ItemDescription.Modifier(item, color).andThen(TooltipModifier.mapNull((TooltipModifier) KineticStats.create((Item) item)));
         });
     }
 
-    public static SimulatedRegistrate getRegistrate() {
-        return (SimulatedRegistrate)REGISTRATE.get();
-    }
-
     public static ResourceLocation path(String path) {
-        return ResourceLocation.tryBuild((String)MOD_ID, (String)path);
+        return ResourceLocation.tryBuild((String) MOD_ID, (String) path);
     }
 }
 
