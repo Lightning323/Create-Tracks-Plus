@@ -43,9 +43,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.IConfigSpec;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.lightning323.createkinetic.config.TracksServerConfig;
+import org.lightning323.createkinetic.content.gyroscope.GyroscopeController;
+import org.lightning323.createkinetic.content.joystick.JoystickControlClient;
+import org.lightning323.createkinetic.content.joystick.JoystickSessions;
 import org.lightning323.createkinetic.events.TracksCommonEvents;
 import org.lightning323.createkinetic.registry.TracksBlockEntityTypes;
 import org.lightning323.createkinetic.registry.TracksBlocks;
@@ -77,6 +81,20 @@ public class CreateKinetic {
         TracksItems.init();
         SableEventPlatform.INSTANCE.onPhysicsTick(TracksCommonEvents::physicsTick);
         getRegistrate().registerEventListeners(modBus);
+
+        KineticBlocks.register();
+        KineticBlockEntityTypes.register();
+        KineticMenuTypes.register();
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
+        modBus.register(KineticPackets.class);
+        modBus.register(Config.class);
+        NeoForge.EVENT_BUS.register(JoystickSessions.class);
+        NeoForge.EVENT_BUS.register(GyroscopeController.class);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            registerClientHandlers(modBus);
+            KineticPartialModels.init();
+        }
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -88,6 +106,12 @@ public class CreateKinetic {
                 TracksClient.openTuningScreen();
             }
         }));
+    }
+
+    private static void registerClientHandlers(IEventBus modEventBus) {
+        modEventBus.register(KineticClient.class);
+        modEventBus.register(KineticKeys.class);
+        NeoForge.EVENT_BUS.register(JoystickControlClient.class);
     }
 
 
