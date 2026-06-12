@@ -1,5 +1,6 @@
-package org.lightning323.createkinetic;
+package org.lightning323.createkinetic.registry;
 
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.joystick.JoystickMenu;
 import org.lightning323.createkinetic.content.joystick.JoystickScreen;
 import com.tterrag.registrate.util.entry.MenuEntry;

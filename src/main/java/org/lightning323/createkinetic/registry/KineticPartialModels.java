@@ -1,7 +1,8 @@
-package org.lightning323.createkinetic;
+package org.lightning323.createkinetic.registry;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.resources.ResourceLocation;
+import org.lightning323.createkinetic.CreateKinetic;
 
 public final class KineticPartialModels {
    public static final PartialModel GYROSCOPE_FLYWHEEL = block("gyroscope/flywheel");

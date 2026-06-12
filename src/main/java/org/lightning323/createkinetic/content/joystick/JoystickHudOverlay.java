@@ -1,6 +1,6 @@
 package org.lightning323.createkinetic.content.joystick;
 
-import org.lightning323.createkinetic.KineticKeys;
+import org.lightning323.createkinetic.client.KineticKeys;
 import java.util.Objects;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

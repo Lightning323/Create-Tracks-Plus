@@ -1,6 +1,6 @@
 package org.lightning323.createkinetic.content.joystick;
 
-import org.lightning323.createkinetic.KineticPartialModels;
+import org.lightning323.createkinetic.registry.KineticPartialModels;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.FlatLit;

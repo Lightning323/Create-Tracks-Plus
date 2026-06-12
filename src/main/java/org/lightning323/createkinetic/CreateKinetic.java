@@ -43,17 +43,20 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.lightning323.createkinetic.client.KineticClient;
+import org.lightning323.createkinetic.config.Config;
 import org.lightning323.createkinetic.config.TracksServerConfig;
 import org.lightning323.createkinetic.content.gyroscope.GyroscopeController;
-import org.lightning323.createkinetic.content.joystick.JoystickControlClient;
 import org.lightning323.createkinetic.content.joystick.JoystickSessions;
 import org.lightning323.createkinetic.events.TracksCommonEvents;
+import org.lightning323.createkinetic.network.KineticPackets;
 import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
 import org.lightning323.createkinetic.registry.KineticBlocks;
 import org.lightning323.createkinetic.registry.KineticItems;
 import org.lightning323.createkinetic.network.OpenTuningScreenPayload;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
+import org.lightning323.createkinetic.registry.KineticMenuTypes;
 
 import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 
@@ -72,7 +75,7 @@ public class CreateKinetic {
         modBus.addListener(CreateKinetic::registerPayloads);
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
         CreateKinetic.setTooltips();
-        TracksClient.init(modBus);
+        KineticClient.init(modBus);
         KineticBlocks.init();
         KineticBlockEntityTypes.init();
         KineticItems.init();
@@ -94,7 +97,7 @@ public class CreateKinetic {
         registrar.playToServer(SelectTrackTuningModePayload.TYPE, SelectTrackTuningModePayload.STREAM_CODEC, SelectTrackTuningModePayload::handle);
         registrar.playToClient(OpenTuningScreenPayload.TYPE, OpenTuningScreenPayload.STREAM_CODEC, (payload, context) -> context.enqueueWork(() -> {
             if (FMLEnvironment.dist == Dist.CLIENT) {
-                TracksClient.openTuningScreen();
+                KineticClient.openTuningScreen();
             }
         }));
     }

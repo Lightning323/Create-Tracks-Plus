@@ -1,6 +1,6 @@
 package org.lightning323.createkinetic.content.gyroscope;
 
-import org.lightning323.createkinetic.Config;
+import org.lightning323.createkinetic.config.Config;
 import dev.ryanhcode.sable.api.block.BlockEntitySubLevelActor;
 import dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle;
 import dev.ryanhcode.sable.api.physics.mass.MassData;

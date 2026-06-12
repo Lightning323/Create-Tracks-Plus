@@ -1,6 +1,6 @@
 package org.lightning323.createkinetic.content.gyroscope;
 
-import org.lightning323.createkinetic.Config;
+import org.lightning323.createkinetic.config.Config;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import dev.ryanhcode.sable.Sable;

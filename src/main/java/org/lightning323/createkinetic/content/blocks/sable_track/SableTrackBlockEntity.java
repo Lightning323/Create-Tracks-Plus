@@ -81,7 +81,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollVa
 import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import org.lightning323.createkinetic.CreateKinetic;
-import org.lightning323.createkinetic.TracksClient;
+import org.lightning323.createkinetic.client.KineticClient;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
 import org.lightning323.createkinetic.registry.KineticItems;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
@@ -1155,7 +1155,7 @@ public class SableTrackBlockEntity
         }
 
         public boolean testHit(LevelAccessor level, BlockPos pos, BlockState state, Vec3 localHit) {
-            if (TracksClient.holdingSuspensionKey && !TracksClient.holdingSuspensionKeyInPositionMode && !TracksClient.holdingSuspensionKeyInAllPositionMode && !TracksClient.holdingSuspensionKeyInResetMode) {
+            if (KineticClient.holdingSuspensionKey && !KineticClient.holdingSuspensionKeyInPositionMode && !KineticClient.holdingSuspensionKeyInAllPositionMode && !KineticClient.holdingSuspensionKeyInResetMode) {
                 return true;
             }
             Vec3 offset = this.getLocalOffset(level, pos, state);

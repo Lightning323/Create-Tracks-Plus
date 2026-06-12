@@ -1,5 +1,6 @@
-package org.lightning323.createkinetic;
+package org.lightning323.createkinetic.network;
 
+import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.content.joystick.C2SExitJoystickControl;
 import org.lightning323.createkinetic.content.joystick.C2SJoystickButton;
 import org.lightning323.createkinetic.content.joystick.C2SJoystickClearFrequencies;

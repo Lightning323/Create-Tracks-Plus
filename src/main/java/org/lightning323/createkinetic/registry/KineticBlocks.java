@@ -24,7 +24,7 @@ import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import org.lightning323.createkinetic.Config;
+import org.lightning323.createkinetic.config.Config;
 import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock;

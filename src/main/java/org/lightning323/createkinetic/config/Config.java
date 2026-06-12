@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic;
+package org.lightning323.createkinetic.config;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.config.IConfigSpec;
@@ -18,7 +18,7 @@ public final class Config {
    private static final ModConfigSpec.DoubleValue JOYSTICK_PIXELS_PER_STEP;
    private static final ModConfigSpec.IntValue JOYSTICK_KEY_REPEAT_DELAY_MS;
    private static final ModConfigSpec.IntValue JOYSTICK_SPRING_BACK_DELAY_MS;
-   static final ModConfigSpec SPEC;
+   public static final ModConfigSpec SPEC;
    public static final ModConfigSpec CLIENT_SPEC;
    private static volatile double gyroscopeOmegaTarget;
    private static volatile double gyroscopeDampingRatio;

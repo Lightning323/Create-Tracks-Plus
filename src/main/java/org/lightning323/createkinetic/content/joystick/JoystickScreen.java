@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.lightning323.createkinetic.KineticPartialModels;
+import org.lightning323.createkinetic.registry.KineticPartialModels;
 import org.lightning323.createkinetic.foundation.gui.widget.HoverTintIconButton;
 import org.lightning323.createkinetic.foundation.gui.widget.ToggleButton;
 import com.simibubi.create.foundation.gui.AllGuiTextures;

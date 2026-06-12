@@ -1,8 +1,8 @@
 package org.lightning323.createkinetic.content.joystick;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import org.lightning323.createkinetic.KineticKeys;
-import org.lightning323.createkinetic.Config;
+import org.lightning323.createkinetic.client.KineticKeys;
+import org.lightning323.createkinetic.config.Config;
 import com.simibubi.create.foundation.utility.ControlsUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
