@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.foundation.gui.widget;
+package org.lightning323.createkinetic.client.gui;
 
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.widget.IconButton;

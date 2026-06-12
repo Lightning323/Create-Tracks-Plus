@@ -47,7 +47,7 @@ import org.lightning323.createkinetic.client.KineticClient;
 import org.lightning323.createkinetic.config.Config;
 import org.lightning323.createkinetic.content.blocks.gyroscope.GyroscopeController;
 import org.lightning323.createkinetic.content.blocks.joystick.JoystickSessions;
-import org.lightning323.createkinetic.events.TracksCommonEvents;
+import org.lightning323.createkinetic.events.KineticEvents;
 import org.lightning323.createkinetic.network.KineticPackets;
 import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
 import org.lightning323.createkinetic.registry.KineticBlocks;
@@ -78,7 +78,7 @@ public class CreateKinetic {
         KineticBlocks.init();
         KineticBlockEntityTypes.init();
         KineticItems.init();
-        SableEventPlatform.INSTANCE.onPhysicsTick(TracksCommonEvents::physicsTick);
+        SableEventPlatform.INSTANCE.onPhysicsTick(KineticEvents::physicsTick);
         getRegistrate().registerEventListeners(modBus);
         KineticMenuTypes.register();
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

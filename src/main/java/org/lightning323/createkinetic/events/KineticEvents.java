@@ -11,7 +11,9 @@ import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock
 import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.server.level.ServerLevel;
 
-public class TracksCommonEvents {
+public class KineticEvents {
+
+    //This event runs on both server and client side
     public static void physicsTick(SubLevelPhysicsSystem physicsSystem, double timeStep) {
         ServerLevel level = physicsSystem.getLevel();
         SableTrackBlockEntity.applyAllBatchedForces(level, timeStep);
