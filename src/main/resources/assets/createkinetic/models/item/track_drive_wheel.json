@@ -1,5 +1,5 @@
 {
-  "parent": "tracks:block/wheels",
+  "parent": "createkinetic:block/cogs",
   "display": {
     "thirdperson_righthand": {
       "rotation": [75, 45, 0],

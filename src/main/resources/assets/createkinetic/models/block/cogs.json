@@ -3,9 +3,9 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"3": "create:block/axis",
-		"4": "tracks:block/tire_0",
+		"4": "createkinetic:block/tire_0",
 		"5": "create:block/axis_top",
-		"particle": "tracks:block/tire_0"
+		"particle": "createkinetic:block/tire_0"
 	},
 	"elements": [
 		{

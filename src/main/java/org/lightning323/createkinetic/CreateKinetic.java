@@ -58,7 +58,7 @@ import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 
 @Mod(value = MOD_ID)
 public class CreateKinetic {
-    public static final String MOD_ID = "tracks";
+    public static final String MOD_ID = "createkinetic";
     public static final String trackHiddenTag = "tracks_hidden";
 
     private static final NonNullSupplier<KineticRegistrate> REGISTRATE = KineticRegistrate.getKineticRegistrate(MOD_ID);

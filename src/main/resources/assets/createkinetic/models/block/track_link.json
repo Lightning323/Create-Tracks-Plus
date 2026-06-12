@@ -7,7 +7,7 @@
                          32
                      ],
     "textures":  {
-                     "2":  "tracks:block/belt"
+                     "2":  "createkinetic:block/belt"
                  },
     "elements":  [
                      {

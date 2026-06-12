@@ -2,7 +2,7 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "tracks:block/tire_0",
+		"0": "createkinetic:block/tire_0",
 		"3": "create:block/axis",
 		"5": "create:block/axis_top",
 		"particle": "create:block/axis"

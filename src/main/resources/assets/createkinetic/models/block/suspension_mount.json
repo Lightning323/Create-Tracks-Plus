@@ -5,7 +5,7 @@
 	"textures": {
 		"2": "offroad:block/suspension_0",
 		"3": "offroad:block/suspension_1",
-		"particle": "tracks:block/suspension_mount"
+		"particle": "createkinetic:block/suspension_mount"
 	},
 	"elements": [
 		{

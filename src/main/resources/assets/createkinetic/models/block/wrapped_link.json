@@ -2,8 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "tracks:block/belt",
-		"particle": "tracks:block/belt"
+		"2": "createkinetic:block/belt",
+		"particle": "createkinetic:block/belt"
 	},
 	"elements": [
 		{
