@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.Gr00ze.stickywheels.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "OffroadMixin",
+    "OffroadCommonEventsMixin",
+    "OffroadItemsMixin",
+    "WheelMountBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

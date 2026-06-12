@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:honey_bottle"
+    },
+    "T": {
+      "item": "offroad:tire"
+    }
+  },
+  "pattern": [
+    " H ",
+    "HTH",
+    " H "
+  ],
+  "result": {
+    "count": 1,
+    "id": "offroad:sticky_tire"
+  }
+}

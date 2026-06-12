@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:honey_block"
+    },
+    "T": {
+      "item": "offroad:monstrous_tire"
+    }
+  },
+  "pattern": [
+    " H ",
+    "HTH",
+    " H "
+  ],
+  "result": {
+    "count": 1,
+    "id": "offroad:sticky_monstrous_tire"
+  }
+}
