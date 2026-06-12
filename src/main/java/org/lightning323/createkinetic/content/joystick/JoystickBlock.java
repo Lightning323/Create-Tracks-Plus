@@ -1,6 +1,5 @@
 package org.lightning323.createkinetic.content.joystick;
 
-import org.lightning323.createkinetic.KineticBlockEntityTypes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import java.util.UUID;
@@ -31,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
 
 public class JoystickBlock extends Block implements EntityBlock, IBE<JoystickBlockEntity>, IWrenchable {
    public static final BooleanProperty POWERED;

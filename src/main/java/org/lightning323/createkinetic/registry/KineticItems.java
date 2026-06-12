@@ -17,7 +17,7 @@ import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
 
-public class TracksItems {
+public class KineticItems {
     private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();
 
     public static final ItemEntry<Item> SMALL_SUSPENSION_TRACK = REGISTRATE.item("small_suspension_track", Item::new).register();

@@ -21,18 +21,15 @@
  */
 package org.lightning323.createkinetic;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.ryanhcode.sable.platform.SableEventPlatform;
-import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import dev.simulated_team.simulated.util.SimColors;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -51,9 +48,9 @@ import org.lightning323.createkinetic.content.gyroscope.GyroscopeController;
 import org.lightning323.createkinetic.content.joystick.JoystickControlClient;
 import org.lightning323.createkinetic.content.joystick.JoystickSessions;
 import org.lightning323.createkinetic.events.TracksCommonEvents;
-import org.lightning323.createkinetic.registry.TracksBlockEntityTypes;
-import org.lightning323.createkinetic.registry.TracksBlocks;
-import org.lightning323.createkinetic.registry.TracksItems;
+import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
+import org.lightning323.createkinetic.registry.KineticBlocks;
+import org.lightning323.createkinetic.registry.KineticItems;
 import org.lightning323.createkinetic.network.OpenTuningScreenPayload;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
@@ -76,14 +73,11 @@ public class CreateKinetic {
         modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
         CreateKinetic.setTooltips();
         TracksClient.init(modBus);
-        TracksBlocks.init();
-        TracksBlockEntityTypes.init();
-        TracksItems.init();
+        KineticBlocks.init();
+        KineticBlockEntityTypes.init();
+        KineticItems.init();
         SableEventPlatform.INSTANCE.onPhysicsTick(TracksCommonEvents::physicsTick);
         getRegistrate().registerEventListeners(modBus);
-
-        KineticBlocks.register();
-        KineticBlockEntityTypes.register();
         KineticMenuTypes.register();
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
@@ -91,10 +85,7 @@ public class CreateKinetic {
         modBus.register(Config.class);
         NeoForge.EVENT_BUS.register(JoystickSessions.class);
         NeoForge.EVENT_BUS.register(GyroscopeController.class);
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            registerClientHandlers(modBus);
-            KineticPartialModels.init();
-        }
+
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -106,12 +97,6 @@ public class CreateKinetic {
                 TracksClient.openTuningScreen();
             }
         }));
-    }
-
-    private static void registerClientHandlers(IEventBus modEventBus) {
-        modEventBus.register(KineticClient.class);
-        modEventBus.register(KineticKeys.class);
-        NeoForge.EVENT_BUS.register(JoystickControlClient.class);
     }
 
 

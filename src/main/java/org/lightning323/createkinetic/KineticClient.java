@@ -35,6 +35,8 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.lightning323.createkinetic.content.joystick.JoystickVisual;
+import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
+import org.lightning323.createkinetic.registry.KineticBlocks;
 
 import static org.lightning323.createkinetic.CreateKinetic.MOD_ID;
 

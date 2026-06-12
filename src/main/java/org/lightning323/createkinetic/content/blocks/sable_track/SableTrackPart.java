@@ -6,7 +6,7 @@
  */
 package org.lightning323.createkinetic.content.blocks.sable_track;
 
-import org.lightning323.createkinetic.registry.TracksItems;
+import org.lightning323.createkinetic.registry.KineticItems;
 import net.minecraft.world.item.ItemStack;
 
 public enum SableTrackPart {
@@ -37,10 +37,10 @@ public enum SableTrackPart {
     }
 
     public static SableTrackPart fromStack(ItemStack stack) {
-        if (stack.is(TracksItems.SMALL_SUSPENSION_TRACK.asItem())) {
+        if (stack.is(KineticItems.SMALL_SUSPENSION_TRACK.asItem())) {
             return SMALL_SUSPENSION;
         }
-        if (stack.is(TracksItems.SMALL_TRACK_DRIVE_WHEEL.asItem())) {
+        if (stack.is(KineticItems.SMALL_TRACK_DRIVE_WHEEL.asItem())) {
             return SMALL_DRIVE;
         }
         return NONE;

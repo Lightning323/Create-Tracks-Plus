@@ -4,17 +4,12 @@
 package org.lightning323.createkinetic;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 import dev.ryanhcode.offroad.index.OffroadBlockEntityTypes;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
-import dev.simulated_team.simulated.registrate.simulated_tab.CreativeTabItemTransforms;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -23,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -36,8 +30,10 @@ import org.lightning323.createkinetic.client.TrackTuningScreen;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRenderer;
 import org.lightning323.createkinetic.content.blocks.wheel_mount.AdjustableWheelMountRenderer;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
+import org.lightning323.createkinetic.content.joystick.JoystickControlClient;
 import org.lightning323.createkinetic.registry.*;
 import org.lightning323.createkinetic.network.RequestOpenTuningPayload;
+import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -53,7 +49,17 @@ public class TracksClient {
     public static boolean holdingSuspensionKeyInAllPositionMode = false;
     public static boolean holdingSuspensionKeyInResetMode = false;
 
+
+    private static void registerClientHandlers(IEventBus modEventBus) {
+        modEventBus.register(KineticClient.class);
+        modEventBus.register(KineticKeys.class);
+        NeoForge.EVENT_BUS.register(JoystickControlClient.class);
+    }
+
+
     public static void init(IEventBus modBus) {
+        registerClientHandlers(modBus);
+        KineticPartialModels.init();
         modBus.addListener(TracksClient::clientSetup);
         modBus.addListener(TracksClient::registerKeys);
         modBus.addListener(TracksClient::buildContents);
@@ -66,7 +72,7 @@ public class TracksClient {
         event.enqueueWork(() -> {
             TrackRenderTuning.load(Minecraft.getInstance().gameDirectory.toPath().resolve("config/" + CreateKinetic.MOD_ID + "-render-tuning.txt"));
             BlockEntityRenderers.register((BlockEntityType) ((BlockEntityType) OffroadBlockEntityTypes.WHEEL_MOUNT.get()), AdjustableWheelMountRenderer::new);
-            BlockEntityRenderers.register((BlockEntityType) ((BlockEntityType) TracksBlockEntityTypes.SABLE_TRACK.get()), SableTrackRenderer::new);
+            BlockEntityRenderers.register((BlockEntityType) ((BlockEntityType) KineticBlockEntityTypes.SABLE_TRACK.get()), SableTrackRenderer::new);
         });
     }
 
@@ -76,9 +82,9 @@ public class TracksClient {
 
     private static void clientTick(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
-        boolean bl = TracksClient.holdingSuspensionKey = minecraft.player != null && (minecraft.player.getMainHandItem().is(TracksItems.SUSPENSION_KEY.asItem()) || minecraft.player.getOffhandItem().is(TracksItems.SUSPENSION_KEY.asItem()));
+        boolean bl = TracksClient.holdingSuspensionKey = minecraft.player != null && (minecraft.player.getMainHandItem().is(KineticItems.SUSPENSION_KEY.asItem()) || minecraft.player.getOffhandItem().is(KineticItems.SUSPENSION_KEY.asItem()));
         if (minecraft.player != null && TracksClient.holdingSuspensionKey) {
-            ItemStack key = minecraft.player.getMainHandItem().is(TracksItems.SUSPENSION_KEY.asItem()) ? minecraft.player.getMainHandItem() : minecraft.player.getOffhandItem();
+            ItemStack key = minecraft.player.getMainHandItem().is(KineticItems.SUSPENSION_KEY.asItem()) ? minecraft.player.getMainHandItem() : minecraft.player.getOffhandItem();
             SuspensionKeyItem.TuningMode mode = SuspensionKeyItem.getMode(key);
             TracksClient.holdingSuspensionKeyInPositionMode = mode == SuspensionKeyItem.TuningMode.POSITION;
             TracksClient.holdingSuspensionKeyInAllPositionMode = mode == SuspensionKeyItem.TuningMode.ALL_POSITION;
@@ -115,10 +121,10 @@ public class TracksClient {
 
     public static void buildContents(BuildCreativeModeTabContentsEvent event) {
         if (!built.get()) {
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_mount", TracksBlocks.TRACK_MOUNT::asItem);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", TracksItems.SMALL_SUSPENSION_TRACK::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_track_drive_wheel", TracksItems.SMALL_TRACK_DRIVE_WHEEL::get);
-            registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_key", TracksItems.SUSPENSION_KEY::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "track_mount", KineticBlocks.TRACK_MOUNT::asItem);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_suspension_track", KineticItems.SMALL_SUSPENSION_TRACK::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "small_track_drive_wheel", KineticItems.SMALL_TRACK_DRIVE_WHEEL::get);
+            registerSectionItem(OFFROAD_CREATIVE_SECTION, "suspension_key", KineticItems.SUSPENSION_KEY::get);
             built.set(true);
         }
     }

@@ -83,7 +83,7 @@ import dev.engine_room.flywheel.lib.transform.TransformStack;
 import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.TracksClient;
 import org.lightning323.createkinetic.content.items.SuspensionKeyItem;
-import org.lightning323.createkinetic.registry.TracksItems;
+import org.lightning323.createkinetic.registry.KineticItems;
 import org.lightning323.createkinetic.network.SelectTrackTuningModePayload;
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.block.BlockEntitySubLevelActor;
@@ -1133,7 +1133,7 @@ public class SableTrackBlockEntity
         }
 
         public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
-            SuspensionKeyItem.TuningMode mode = player.getMainHandItem().is(TracksItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getMainHandItem()) : (player.getOffhandItem().is(TracksItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getOffhandItem()) : SuspensionKeyItem.TuningMode.STRENGTH);
+            SuspensionKeyItem.TuningMode mode = player.getMainHandItem().is(KineticItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getMainHandItem()) : (player.getOffhandItem().is(KineticItems.SUSPENSION_KEY.asItem()) ? SuspensionKeyItem.getMode(player.getOffhandItem()) : SuspensionKeyItem.TuningMode.STRENGTH);
             this.owner.selectScrollTuningMode(mode.key);
             if (this.owner.level != null && ((SableTrackBlockEntity) this.owner).level.isClientSide) {
                 PacketDistributor.sendToServer((CustomPacketPayload) new SelectTrackTuningModePayload(this.owner.getBlockPos(), mode.key), (CustomPacketPayload[]) new CustomPacketPayload[0]);
