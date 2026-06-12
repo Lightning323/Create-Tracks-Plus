@@ -1,7 +1,7 @@
 {
   "values": [
-    "tracks:track_mount",
-    "tracks:suspension_track",
-    "tracks:track_drive_wheel"
+    "createkinetic:track_mount",
+    "createkinetic:suspension_track",
+    "createkinetic:track_drive_wheel"
   ]
 }

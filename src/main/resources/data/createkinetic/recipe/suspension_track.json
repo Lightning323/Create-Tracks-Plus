@@ -7,23 +7,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "create:cogwheel"
+    "B": {
+      "item": "create:belt_connector"
     },
     "M": {
-      "item": "tracks:track_mount"
-    },
-    "S": {
-      "item": "create:shaft"
+      "item": "createkinetic:track_mount"
     }
   },
   "pattern": [
-    "C",
+    "B",
     "M",
-    "S"
+    "B"
   ],
   "result": {
     "count": 1,
-    "id": "tracks:track_drive_wheel"
+    "id": "createkinetic:suspension_track"
   }
 }

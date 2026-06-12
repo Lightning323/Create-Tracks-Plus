@@ -11,7 +11,7 @@
       "item": "create:large_cogwheel"
     },
     "M": {
-      "item": "tracks:track_drive_wheel"
+      "item": "createkinetic:track_drive_wheel"
     },
     "S": {
       "item": "create:shaft"
@@ -24,6 +24,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "tracks:large_track_drive_wheel"
+    "id": "createkinetic:large_track_drive_wheel"
   }
 }

@@ -11,7 +11,7 @@
       "item": "create:belt_connector"
     },
     "M": {
-      "item": "tracks:suspension_track"
+      "item": "createkinetic:suspension_track"
     }
   },
   "pattern": [
@@ -21,6 +21,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "tracks:large_suspension_track"
+    "id": "createkinetic:large_suspension_track"
   }
 }

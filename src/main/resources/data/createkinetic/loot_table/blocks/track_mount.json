@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tracks:suspension_track"
+          "name": "createkinetic:track_mount"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "tracks:blocks/suspension_track"
+  "random_sequence": "createkinetic:blocks/track_mount"
 }

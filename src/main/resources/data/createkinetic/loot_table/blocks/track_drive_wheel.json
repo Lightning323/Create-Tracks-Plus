@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tracks:track_mount"
+          "name": "createkinetic:track_drive_wheel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "tracks:blocks/track_mount"
+  "random_sequence": "createkinetic:blocks/track_drive_wheel"
 }
