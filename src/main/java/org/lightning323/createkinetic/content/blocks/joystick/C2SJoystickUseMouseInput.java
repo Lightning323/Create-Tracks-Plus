@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

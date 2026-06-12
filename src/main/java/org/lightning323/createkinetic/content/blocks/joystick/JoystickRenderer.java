@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

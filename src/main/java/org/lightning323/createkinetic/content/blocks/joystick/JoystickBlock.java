@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;

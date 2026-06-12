@@ -14,7 +14,7 @@
 package org.lightning323.createkinetic.network;
 
 import org.lightning323.createkinetic.CreateKinetic;
-import org.lightning323.createkinetic.config.TracksServerConfig;
+import org.lightning323.createkinetic.config.Config;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -33,7 +33,7 @@ public record RequestOpenTuningPayload() implements CustomPacketPayload
             Player patt0$temp = context.player();
             if (patt0$temp instanceof ServerPlayer) {
                 ServerPlayer player = (ServerPlayer)patt0$temp;
-                if (TracksServerConfig.renderTuningCheatsEnabled() && player.hasPermissions(2)) {
+                if (Config.renderTuningCheatsEnabled() && player.hasPermissions(2)) {
                     PacketDistributor.sendToPlayer((ServerPlayer)player, (CustomPacketPayload)new OpenTuningScreenPayload(), (CustomPacketPayload[])new CustomPacketPayload[0]);
                 }
             }

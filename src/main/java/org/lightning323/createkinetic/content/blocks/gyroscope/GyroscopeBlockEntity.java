@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.gyroscope;
+package org.lightning323.createkinetic.content.blocks.gyroscope;
 
 import org.lightning323.createkinetic.config.Config;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;

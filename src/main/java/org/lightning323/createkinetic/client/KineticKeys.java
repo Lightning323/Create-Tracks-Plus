@@ -1,7 +1,7 @@
 package org.lightning323.createkinetic.client;
 
 import com.mojang.blaze3d.platform.InputConstants.Type;
-import org.lightning323.createkinetic.content.joystick.JoystickControlClient;
+import org.lightning323.createkinetic.content.blocks.joystick.JoystickControlClient;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;

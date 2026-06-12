@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;

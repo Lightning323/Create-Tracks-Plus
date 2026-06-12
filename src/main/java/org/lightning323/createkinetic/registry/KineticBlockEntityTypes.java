@@ -15,10 +15,10 @@ import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlockEntity;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRenderer;
-import org.lightning323.createkinetic.content.gyroscope.GyroscopeBlockEntity;
-import org.lightning323.createkinetic.content.gyroscope.GyroscopeRenderer;
-import org.lightning323.createkinetic.content.joystick.JoystickBlockEntity;
-import org.lightning323.createkinetic.content.joystick.JoystickRenderer;
+import org.lightning323.createkinetic.content.blocks.gyroscope.GyroscopeBlockEntity;
+import org.lightning323.createkinetic.content.blocks.gyroscope.GyroscopeRenderer;
+import org.lightning323.createkinetic.content.blocks.joystick.JoystickBlockEntity;
+import org.lightning323.createkinetic.content.blocks.joystick.JoystickRenderer;
 
 public class KineticBlockEntityTypes {
     private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();

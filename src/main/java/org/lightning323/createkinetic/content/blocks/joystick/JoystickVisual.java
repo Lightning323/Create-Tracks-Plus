@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import org.lightning323.createkinetic.registry.KineticPartialModels;
 import dev.engine_room.flywheel.api.instance.Instance;

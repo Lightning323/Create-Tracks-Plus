@@ -2,8 +2,8 @@ package org.lightning323.createkinetic.mixin.compat.drivebywire;//package org.li
 //
 //import org.lightning323.createkinetic.compat.drivebywire.DriveByWireBridge;
 //import org.lightning323.createkinetic.compat.drivebywire.JoystickWireChannels;
-//import org.lightning323.createkinetic.content.joystick.JoystickBlockEntity;
-//import org.lightning323.createkinetic.content.joystick.JoystickDirection;
+//import org.lightning323.createkinetic.content.blocks.joystick.JoystickBlockEntity;
+//import org.lightning323.createkinetic.content.blocks.joystick.JoystickDirection;
 //import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 //import net.minecraft.core.BlockPos;
 //import net.minecraft.world.level.Level;

@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lightning323.createkinetic.client.KineticKeys;

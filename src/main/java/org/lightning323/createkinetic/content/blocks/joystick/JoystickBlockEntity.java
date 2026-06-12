@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import org.lightning323.createkinetic.registry.KineticMenuTypes;
 import com.simibubi.create.Create;

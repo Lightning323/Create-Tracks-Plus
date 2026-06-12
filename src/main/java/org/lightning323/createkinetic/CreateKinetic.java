@@ -45,9 +45,8 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.lightning323.createkinetic.client.KineticClient;
 import org.lightning323.createkinetic.config.Config;
-import org.lightning323.createkinetic.config.TracksServerConfig;
-import org.lightning323.createkinetic.content.gyroscope.GyroscopeController;
-import org.lightning323.createkinetic.content.joystick.JoystickSessions;
+import org.lightning323.createkinetic.content.blocks.gyroscope.GyroscopeController;
+import org.lightning323.createkinetic.content.blocks.joystick.JoystickSessions;
 import org.lightning323.createkinetic.events.TracksCommonEvents;
 import org.lightning323.createkinetic.network.KineticPackets;
 import org.lightning323.createkinetic.registry.KineticBlockEntityTypes;
@@ -73,7 +72,7 @@ public class CreateKinetic {
 
     public CreateKinetic(IEventBus modBus, ModContainer modContainer) {
         modBus.addListener(CreateKinetic::registerPayloads);
-        modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) TracksServerConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, (IConfigSpec) Config.SPEC);
         CreateKinetic.setTooltips();
         KineticClient.init(modBus);
         KineticBlocks.init();
@@ -83,7 +82,6 @@ public class CreateKinetic {
         getRegistrate().registerEventListeners(modBus);
         KineticMenuTypes.register();
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
         modBus.register(KineticPackets.class);
         modBus.register(Config.class);
         NeoForge.EVENT_BUS.register(JoystickSessions.class);

@@ -1,14 +1,14 @@
 package org.lightning323.createkinetic.network;
 
 import org.lightning323.createkinetic.CreateKinetic;
-import org.lightning323.createkinetic.content.joystick.C2SExitJoystickControl;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickButton;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickClearFrequencies;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickSetBind;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickShowHud;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickSpringBack;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickTilt;
-import org.lightning323.createkinetic.content.joystick.C2SJoystickUseMouseInput;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SExitJoystickControl;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickButton;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickClearFrequencies;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickSetBind;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickShowHud;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickSpringBack;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickTilt;
+import org.lightning323.createkinetic.content.blocks.joystick.C2SJoystickUseMouseInput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;

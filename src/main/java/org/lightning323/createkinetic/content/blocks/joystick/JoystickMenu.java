@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.joystick;
+package org.lightning323.createkinetic.content.blocks.joystick;
 
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 import net.minecraft.client.Minecraft;

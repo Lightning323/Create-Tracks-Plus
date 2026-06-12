@@ -29,11 +29,11 @@ import org.lightning323.createkinetic.CreateKinetic;
 import org.lightning323.createkinetic.KineticRegistrate;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackBlock;
 import org.lightning323.createkinetic.content.blocks.sable_track.SableTrackRole;
-import org.lightning323.createkinetic.content.gyroscope.GyroscopeBlock;
+import org.lightning323.createkinetic.content.blocks.gyroscope.GyroscopeBlock;
 import org.lightning323.createkinetic.content.items.TrackMountBlockItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.material.MapColor;
-import org.lightning323.createkinetic.content.joystick.JoystickBlock;
+import org.lightning323.createkinetic.content.blocks.joystick.JoystickBlock;
 
 public class KineticBlocks {
     private static final KineticRegistrate REGISTRATE = CreateKinetic.getRegistrate();

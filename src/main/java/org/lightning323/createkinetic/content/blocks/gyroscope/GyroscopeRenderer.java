@@ -1,4 +1,4 @@
-package org.lightning323.createkinetic.content.gyroscope;
+package org.lightning323.createkinetic.content.blocks.gyroscope;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
